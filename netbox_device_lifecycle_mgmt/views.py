@@ -218,6 +218,21 @@ class SoftwareImageBulkDeleteView(generic.BulkDeleteView):
     filterset = filtersets.SoftwareImageFilterSet
 
 
+@register_model_view(models.SoftwareImage, 'associations')
+class SoftwareImageAssociationsView(generic.ObjectChildrenView):
+    queryset = models.SoftwareImage.objects.all()
+    child_model = models.SoftwareImageAssociation
+    table = tables.SoftwareImageAssociationTable
+    template_name = 'netbox_device_lifecycle_mgmt/inc/view_tab.html'
+    tab = ViewTab(label='Associations', badge=lambda obj: obj.associations.count(), hide_if_empty=True)
+
+    def get_children(self, request, parent):
+        return self.child_model.objects.restrict(request.user, 'view').filter(image=parent)
+
+    def get_extra_context(self, request, instance):
+        return {'table_config': f'{self.table.__name__}_config'}
+
+
 #
 # Software Image Assignments
 #

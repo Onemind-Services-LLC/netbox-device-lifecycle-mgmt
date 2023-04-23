@@ -156,7 +156,7 @@ class SoftwareImageAssociation(PrimaryModel):
     image = models.ForeignKey(
         to='SoftwareImage',
         on_delete=models.CASCADE,
-        related_name='+',
+        related_name='associations',
     )
 
     device_types = models.ManyToManyField(
