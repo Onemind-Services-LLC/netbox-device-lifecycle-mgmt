@@ -12,10 +12,12 @@ class GeneralNoticeExtension(PluginTemplateExtension):
             'object_id': self.context['object'].id,
         }
 
-        return self.render(
-            'netbox_device_lifecycle_mgmt/inc/general_notice.html',
-            extra_context={'object': HardwareNotice.objects.filter(**filters).first()},
-        )
+        if instance := HardwareNotice.objects.filter(**filters).first():
+            return self.render(
+                'netbox_device_lifecycle_mgmt/inc/general_notice.html',
+                extra_context={'object': instance},
+            )
+        return ''
 
 
 class DeviceTypeHardwareNoticeExtension(GeneralNoticeExtension):

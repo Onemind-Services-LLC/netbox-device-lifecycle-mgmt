@@ -27,6 +27,10 @@
                                                         <a href="{{ object.get_absolute_url }}">{{ object.id }}</a>
                                                     </td>
                                                 </tr>
+                                                <tr>
+                                                    <td>{{ object.object|meta:'verbose_name'|bettertitle }}</td>
+                                                    <td>{{ object.object|linkify }}</td>
+                                                </tr>
                                                 {% if object.end_of_sale_date %}
                                                     <tr>
                                                         <td>End of Sale</td>

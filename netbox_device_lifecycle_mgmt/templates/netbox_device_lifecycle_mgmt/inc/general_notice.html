@@ -8,7 +8,7 @@
                         <tr>
                             <td>Name</td>
                             <td>
-                                <a href="{% url 'plugins:netbox_device_lifecycle_mgmt:hardwarenotice' pk=object.pk %}">{{ object }}</a>
+                                <a href="{{ object.get_absolute_url }}">{{ object }}</a>
                             </td>
                         </tr>
                         <tr>
