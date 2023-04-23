@@ -16,7 +16,6 @@ class HardwareNoticeFilterForm(NetBoxModelFilterSetForm):
 
     fieldsets = (
         (None, ('q', 'filter_id', 'tag')),
-        ('Types', ('device_type_id', 'inventory_item_id')),
         ('Release Date', ('release_date', 'release_date__before', 'release_date__after')),
         ('End of Sale', ('end_of_sale', 'end_of_sale__before', 'end_of_sale__after')),
         ('End of Support', ('end_of_support', 'end_of_support__before', 'end_of_support__after')),
@@ -25,18 +24,6 @@ class HardwareNoticeFilterForm(NetBoxModelFilterSetForm):
             'End of Security Updates',
             ('end_of_security_updates', 'end_of_security_updates__before', 'end_of_security_updates__after'),
         ),
-    )
-
-    device_type_id = DynamicModelMultipleChoiceField(
-        queryset=DeviceType.objects.all(),
-        required=False,
-        label='Device Type',
-    )
-
-    inventory_item_id = DynamicModelMultipleChoiceField(
-        queryset=InventoryItem.objects.all(),
-        required=False,
-        label='Inventory Item',
     )
 
     release_date = forms.DateField(required=False, label='Release Date', widget=DatePicker())

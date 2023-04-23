@@ -27,22 +27,30 @@
                                                         <a href="{{ object.get_absolute_url }}">{{ object.id }}</a>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <td>End of Sale</td>
-                                                    <td>{{ object.end_of_sale_date|placeholder }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>End of Support</td>
-                                                    <td>{{ object.end_of_support_date|placeholder }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>End of Software Release</td>
-                                                    <td>{{ object.end_of_sw_releases_date|placeholder }}</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>End of Security Support</td>
-                                                    <td>{{ object.end_of_security_updates_date|placeholder }}</td>
-                                                </tr>
+                                                {% if object.end_of_sale_date %}
+                                                    <tr>
+                                                        <td>End of Sale</td>
+                                                        <td>{{ object.end_of_sale_date }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                                {% if object.end_of_support_dat %}
+                                                    <tr>
+                                                        <td>End of Support</td>
+                                                        <td>{{ object.end_of_support_date }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                                {% if  object.end_of_sw_releases_date %}
+                                                    <tr>
+                                                        <td>End of Software Release</td>
+                                                        <td>{{ object.end_of_sw_releases_date }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                                {% if object.end_of_security_updates_date %}
+                                                    <tr>
+                                                        <td>End of Security Support</td>
+                                                        <td>{{ object.end_of_security_updates_date }}</td>
+                                                    </tr>
+                                                {% endif %}
                                                 {% if object.documentation_url %}
                                                     <tr>
                                                         <td>Documentation URL</td>

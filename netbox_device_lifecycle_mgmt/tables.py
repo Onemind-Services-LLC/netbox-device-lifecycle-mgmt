@@ -7,9 +7,11 @@ __all__ = ['HardwareNoticeTable']
 
 
 class HardwareNoticeTable(NetBoxTable):
-    device_type = tables.Column(linkify=True)
+    object_type = columns.ContentTypeColumn(verbose_name='Object type')
 
-    inventory_item = tables.Column(linkify=True)
+    object = tables.Column(linkify=True, orderable=False, verbose_name='Object')
+
+    comments = columns.MarkdownColumn()
 
     tags = columns.TagColumn(url_name='plugins:netbox_device_lifecycle_mgmt:hardwarenotice_list')
 
@@ -18,8 +20,8 @@ class HardwareNoticeTable(NetBoxTable):
         fields = (
             'pk',
             'id',
-            'device_type',
-            'inventory_item',
+            'object_type',
+            'object',
             'description',
             'release_date',
             'end_of_sale_date',
@@ -34,8 +36,8 @@ class HardwareNoticeTable(NetBoxTable):
         )
         default_columns = (
             'id',
-            'device_type',
-            'inventory_item',
+            'object_type',
+            'object',
             'description',
             'release_date',
             'end_of_sale_date',

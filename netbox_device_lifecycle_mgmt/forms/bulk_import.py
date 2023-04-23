@@ -11,8 +11,7 @@ class HardwareNoticeImportForm(NetBoxModelImportForm):
     class Meta:
         model = HardwareNotice
         fields = (
-            'device_type',
-            'inventory_item',
+            # TODO: Add object selector
             'release_date',
             'end_of_sale_date',
             'end_of_support_date',

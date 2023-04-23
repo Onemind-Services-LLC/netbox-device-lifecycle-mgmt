@@ -56,16 +56,17 @@ class HardwareNoticeDevicesView(generic.ObjectChildrenView):
     table = DeviceTable
     filterset = DeviceFilterSet
     template_name = 'netbox_device_lifecycle_mgmt/inc/view_tab.html'
-    tab = ViewTab(label='Devices', hide_if_empty=True)
+    tab = ViewTab(label='Devices', badge=lambda obj: obj.device_count, hide_if_empty=True)
 
     def get_children(self, request, parent):
-        if parent.device_type:
-            return self.child_model.objects.restrict(request.user, 'view').filter(device_type=parent.device_type)
+        filter = {}
 
-        if parent.inventory_item:
-            return self.child_model.objects.restrict(request.user, 'view').filter(inventoryitems=parent.inventory_item)
+        if hasattr(parent.object, 'instances'):
+            filter['pk__in'] = [i.pk for i in parent.object.instances.all()]
+        elif hasattr(parent.object, 'device'):
+            filter['pk'] = parent.object.device.pk
 
-        return self.child_model.objects.none()
+        return self.child_model.objects.restrict(request.user, 'view').filter(**filter)
 
     def get_extra_context(self, request, instance):
         return {'table_config': f'{self.table.__name__}_config'}

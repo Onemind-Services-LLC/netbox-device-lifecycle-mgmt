@@ -1,10 +1,11 @@
-from dcim.api.serializers import (
-    NestedDeviceTypeSerializer,
-    NestedInventoryItemSerializer,
-)
+from django.contrib.contenttypes.models import ContentType
+from netbox.api.fields import ContentTypeField
 from netbox.api.serializers import NetBoxModelSerializer
+from netbox.constants import NESTED_SERIALIZER_PREFIX
 from rest_framework import serializers
+from utilities.api import get_serializer_for_model
 
+from ..constants import HARDWARE_NOTICE_ASSIGNMENT_MODELS
 from ..models import *
 
 __all__ = ['HardwareNoticeSerializer']
@@ -15,13 +16,12 @@ class HardwareNoticeSerializer(NetBoxModelSerializer):
         view_name='plugins-api:netbox_device_lifecycle_mgmt-api:hardwarenotice-detail',
     )
 
-    device_type = NestedDeviceTypeSerializer(
+    object_type = ContentTypeField(
+        queryset=ContentType.objects.filter(HARDWARE_NOTICE_ASSIGNMENT_MODELS),
         required=False,
+        allow_null=True,
     )
-
-    inventory_item = NestedInventoryItemSerializer(
-        required=False,
-    )
+    object = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = HardwareNotice
@@ -29,8 +29,9 @@ class HardwareNoticeSerializer(NetBoxModelSerializer):
             'id',
             'url',
             'display',
-            'device_type',
-            'inventory_item',
+            'object_type',
+            'object_id',
+            'object',
             'release_date',
             'end_of_sale_date',
             'end_of_support_date',
@@ -42,3 +43,8 @@ class HardwareNoticeSerializer(NetBoxModelSerializer):
             'created',
             'last_updated',
         )
+
+    def get_object(self, obj):
+        serializer = get_serializer_for_model(obj.object, prefix=NESTED_SERIALIZER_PREFIX)
+        context = {'request': self.context['request']}
+        return serializer(obj.object, context=context).data
