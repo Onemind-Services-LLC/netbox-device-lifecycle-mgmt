@@ -8,6 +8,7 @@ __all__ = [
     'SoftwareImageImportForm',
     'SoftwareImageAssociationImportForm',
     'ServiceProviderImportForm',
+    'ContractImportForm',
 ]
 
 
@@ -83,6 +84,18 @@ class ServiceProviderImportForm(NetBoxModelImportForm):
     class Meta:
         model = ServiceProvider
         fields = (
+            'name',
+            'description',
+            'tags',
+            'comments',
+        )
+
+
+class ContractImportForm(NetBoxModelImportForm):
+    class Meta:
+        model = Contract
+        fields = (
+            'service_provider',
             'name',
             'description',
             'tags',

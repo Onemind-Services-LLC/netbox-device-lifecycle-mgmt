@@ -9,6 +9,7 @@ __all__ = [
     'NestedSoftwareImageSerializer',
     'NestedSoftwareImageAssociationSerializer',
     'NestedServiceProviderSerializer',
+    'NestedContractSerializer',
 ]
 
 
@@ -75,6 +76,20 @@ class NestedServiceProviderSerializer(WritableNestedSerializer):
 
     class Meta:
         model = ServiceProvider
+        fields = (
+            'id',
+            'url',
+            'display',
+        )
+
+
+class NestedContractSerializer(WritableNestedSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='plugins-api:netbox_device_lifecycle_mgmt-api:contract-detail',
+    )
+
+    class Meta:
+        model = Contract
         fields = (
             'id',
             'url',

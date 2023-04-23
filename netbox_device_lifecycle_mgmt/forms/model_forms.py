@@ -24,6 +24,7 @@ __all__ = [
     'SoftwareImageForm',
     'SoftwareImageAssociationForm',
     'ServiceProviderForm',
+    'ContractForm',
 ]
 
 
@@ -259,12 +260,45 @@ class SoftwareImageAssociationForm(NetBoxModelForm):
 
 
 class ServiceProviderForm(NetBoxModelForm):
-    fieldsets = ((None, ('name', 'description', 'tags')),)
-
     class Meta:
         model = ServiceProvider
         fields = [
             'name',
+            'description',
+            'portal_url',
+            'comments',
+            'tags',
+        ]
+
+
+class ContractForm(NetBoxModelForm):
+    service_provider = DynamicModelChoiceField(queryset=ServiceProvider.objects.all(), selector=True)
+
+    comments = CommentField()
+
+    start_date = forms.DateField(widget=DatePicker(), label='Start Date')
+
+    end_date = forms.DateField(required=False, widget=DatePicker(), label='End Date')
+
+    renewal_date = forms.DateField(required=False, widget=DatePicker(), label='Renewal Date')
+
+    fieldsets = (
+        (None, ('service_provider', 'name', 'contract_type', 'description', 'tags')),
+        ('Dates', ('start_date', 'end_date')),
+        ('Billing', ('cost', 'currency', 'renewal_date')),
+    )
+
+    class Meta:
+        model = Contract
+        fields = [
+            'service_provider',
+            'name',
+            'contract_type',
+            'start_date',
+            'end_date',
+            'cost',
+            'currency',
+            'renewal_date',
             'description',
             'comments',
             'tags',

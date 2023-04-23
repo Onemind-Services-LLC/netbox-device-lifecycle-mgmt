@@ -8,6 +8,7 @@ __all__ = [
     'SoftwareImageType',
     'SoftwareImageAssociationType',
     'ServiceProviderType',
+    'ContractType',
 ]
 
 
@@ -38,4 +39,10 @@ class SoftwareImageAssociationType(NetBoxObjectType):
 class ServiceProviderType(NetBoxObjectType):
     class Meta:
         model = models.ServiceProvider
+        fields = '__all__'
+
+
+class ContractType(NetBoxObjectType):
+    class Meta:
+        model = models.Contract
         fields = '__all__'

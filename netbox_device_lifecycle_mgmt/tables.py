@@ -1,6 +1,8 @@
 import django_tables2 as tables
 from netbox.tables import NetBoxTable, columns
+from utilities.forms.fields import ChoiceField
 
+from .choices import *
 from .models import *
 
 __all__ = [
@@ -9,6 +11,7 @@ __all__ = [
     'SoftwareImageTable',
     'SoftwareImageAssociationTable',
     'ServiceProviderTable',
+    'ContractTable',
 ]
 
 
@@ -131,6 +134,8 @@ class SoftwareImageTable(NetBoxTable):
 
     default_image = tables.BooleanColumn(verbose_name='Default Image')
 
+    tags = columns.TagColumn(url_name='plugins:netbox_device_lifecycle_mgmt:softwareimage_list')
+
     class Meta(NetBoxTable.Meta):
         model = SoftwareImage
         fields = (
@@ -160,6 +165,8 @@ class SoftwareImageTable(NetBoxTable):
 
 class SoftwareImageAssociationTable(NetBoxTable):
     image = tables.Column(linkify=True)
+
+    tags = columns.TagColumn(url_name='plugins:netbox_device_lifecycle_mgmt:softwareimageassociation_list')
 
     class Meta(NetBoxTable.Meta):
         model = SoftwareImageAssociation
@@ -193,6 +200,8 @@ class SoftwareImageAssociationTable(NetBoxTable):
 class ServiceProviderTable(NetBoxTable):
     name = tables.Column(linkify=True)
 
+    tags = columns.TagColumn(url_name='plugins:netbox_device_lifecycle_mgmt:serviceprovider_list')
+
     class Meta(NetBoxTable.Meta):
         model = ServiceProvider
         fields = (
@@ -210,4 +219,60 @@ class ServiceProviderTable(NetBoxTable):
             'id',
             'name',
             'description',
+        )
+
+
+class ContractTable(NetBoxTable):
+    name = tables.Column(linkify=True)
+
+    service_provider = tables.Column(linkify=True)
+
+    start_date = tables.DateColumn(
+        verbose_name='Start Date',
+    )
+
+    end_date = tables.DateColumn(
+        verbose_name='End Date',
+    )
+
+    renewal_date = tables.DateColumn(
+        verbose_name='Renewal Date',
+    )
+
+    # contract_type = ChoiceField(
+    #     choices=ContractTypeChoices,
+    # )
+
+    tags = columns.TagColumn(url_name='plugins:netbox_device_lifecycle_mgmt:contract_list')
+
+    class Meta(NetBoxTable.Meta):
+        model = Contract
+        fields = (
+            'pk',
+            'id',
+            'name',
+            'description',
+            'service_provider',
+            'contract_number',
+            'contract_type',
+            'start_date',
+            'end_date',
+            'renewal_date',
+            'cost',
+            'currency',
+            'contract_type',
+            'comments',
+            'tags',
+            'created',
+            'last_updated',
+        )
+
+        default_columns = (
+            'id',
+            'name',
+            'service_provider',
+            'contract_number',
+            'contract_type',
+            'start_date',
+            'end_date',
         )

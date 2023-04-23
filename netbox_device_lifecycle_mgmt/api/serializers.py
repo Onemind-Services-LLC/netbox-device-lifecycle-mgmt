@@ -25,6 +25,7 @@ __all__ = [
     'SoftwareImageSerializer',
     'SoftwareImageAssociationSerializer',
     'ServiceProviderSerializer',
+    'ContractSerializer',
 ]
 
 
@@ -196,6 +197,32 @@ class ServiceProviderSerializer(NetBoxModelSerializer):
             'url',
             'display',
             'name',
+            'portal_url',
+            'comments',
+            'description',
+            'created',
+            'last_updated',
+            'tags',
+        )
+
+
+class ContractSerializer(NetBoxModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='plugins-api:netbox_device_lifecycle_mgmt-api:contract-detail',
+    )
+
+    service_provider = NestedServiceProviderSerializer()
+
+    class Meta:
+        model = Contract
+        fields = (
+            'id',
+            'url',
+            'display',
+            'service_provider',
+            'name',
+            'start_date',
+            'end_date',
             'comments',
             'description',
             'created',

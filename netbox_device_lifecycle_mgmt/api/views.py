@@ -33,3 +33,9 @@ class ServiceProviderViewSet(NetBoxModelViewSet):
     queryset = ServiceProvider.objects.all()
     serializer_class = ServiceProviderSerializer
     filterset_class = ServiceProviderFilterSet
+
+
+class ContractViewSet(NetBoxModelViewSet):
+    queryset = Contract.objects.all()
+    serializer_class = ContractSerializer
+    filterset_class = ContractFilterSet

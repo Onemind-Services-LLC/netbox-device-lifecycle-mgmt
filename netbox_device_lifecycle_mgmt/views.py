@@ -338,3 +338,50 @@ class ServiceProviderBulkDeleteView(generic.BulkDeleteView):
     queryset = models.ServiceProvider.objects.all()
     table = tables.ServiceProviderTable
     filterset = filtersets.ServiceProviderFilterSet
+
+
+#
+# Contracts
+#
+
+
+@register_model_view(models.Contract)
+class ContractView(generic.ObjectView):
+    queryset = models.Contract.objects.all()
+
+
+class ContractListView(generic.ObjectListView):
+    queryset = models.Contract.objects.all()
+    table = tables.ContractTable
+    filterset = filtersets.ContractFilterSet
+    filterset_form = forms.ContractFilterForm
+
+
+@register_model_view(models.Contract, 'edit')
+class ContractEditView(generic.ObjectEditView):
+    queryset = models.Contract.objects.all()
+    form = forms.ContractForm
+
+
+@register_model_view(models.Contract, 'delete')
+class ContractDeleteView(generic.ObjectDeleteView):
+    queryset = models.Contract.objects.all()
+
+
+class ContractBulkEditView(generic.BulkEditView):
+    queryset = models.Contract.objects.all()
+    table = tables.ContractTable
+    filterset = filtersets.ContractFilterSet
+    form = forms.ContractBulkEditForm
+
+
+class ContractBulkImportView(generic.BulkImportView):
+    queryset = models.Contract.objects.all()
+    table = tables.ContractTable
+    model_form = forms.ContractImportForm
+
+
+class ContractBulkDeleteView(generic.BulkDeleteView):
+    queryset = models.Contract.objects.all()
+    table = tables.ContractTable
+    filterset = filtersets.ContractFilterSet

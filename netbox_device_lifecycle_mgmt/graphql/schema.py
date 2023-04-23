@@ -19,3 +19,6 @@ class NetBoxDeviceLifecycleMgmtQuery(graphene.ObjectType):
 
     service_provider = ObjectField(ServiceProviderType)
     service_provider_list = ObjectListField(ServiceProviderType)
+
+    contract = ObjectField(ContractType)
+    contract_list = ObjectListField(ContractType)

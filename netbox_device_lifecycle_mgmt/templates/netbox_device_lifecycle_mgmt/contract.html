@@ -1,0 +1,48 @@
+{% extends 'generic/object.html' %}
+{% load render_table from django_tables2 %}
+
+{% block content %}
+    <div class="row mb-3">
+        <div class="col col-md-6">
+            <div class="card">
+                <h5 class="card-header">Contract</h5>
+                <div class="card-body">
+                    <table class="table table-hover attr-table">
+                        <tr>
+                            <td>Name</td>
+                            <td>{{ object.name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Provider</td>
+                            <td>{{ object.service_provider|linkify }}</td>
+                        </tr>
+                        <tr>
+                            <td>Contract #</td>
+                            <td>{{ object.contract_number|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <td>Start Date</td>
+                            <td>{{ object.start_date }}</td>
+                        </tr>
+                        <tr>
+                            <td>End Date</td>
+                            <td>{{ object.end_date|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <td>Renewal Date</td>
+                            <td>{{ object.renewal_date|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <td>Cost</td>
+                            <td>{{ object.cost|placeholder }} {{ object.currency }}</td>
+                        </tr>
+                        <tr>
+                            <td>Contract Type</td>
+                            <td>{{ object.contract_type }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

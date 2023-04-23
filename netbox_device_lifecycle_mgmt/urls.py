@@ -65,4 +65,11 @@ urlpatterns = (
         name='serviceprovider_bulk_delete',
     ),
     path('service-providers/<int:pk>/', include(get_model_urls(app_name, 'serviceprovider'))),
+    # Contracts
+    path('contracts/', views.ContractListView.as_view(), name='contract_list'),
+    path('contracts/add/', views.ContractEditView.as_view(), name='contract_add'),
+    path('contracts/edit/', views.ContractBulkEditView.as_view(), name='contract_bulk_edit'),
+    path('contracts/import/', views.ContractBulkImportView.as_view(), name='contract_import'),
+    path('contracts/delete/', views.ContractBulkDeleteView.as_view(), name='contract_bulk_delete'),
+    path('contracts/<int:pk>/', include(get_model_urls(app_name, 'contract'))),
 )

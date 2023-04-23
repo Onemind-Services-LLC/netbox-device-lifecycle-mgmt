@@ -13,6 +13,7 @@ __all__ = [
     'SoftwareImageFilterForm',
     'SoftwareImageAssociationFilterForm',
     'ServiceProviderFilterForm',
+    'ContractFilterForm',
 ]
 
 
@@ -204,6 +205,14 @@ class SoftwareImageAssociationFilterForm(NetBoxModelFilterSetForm):
 
 class ServiceProviderFilterForm(NetBoxModelFilterSetForm):
     model = ServiceProvider
+
+    fieldsets = ((None, ('q', 'filter_id', 'tag')),)
+
+    tag = TagFilterField(model)
+
+
+class ContractFilterForm(NetBoxModelFilterSetForm):
+    model = Contract
 
     fieldsets = ((None, ('q', 'filter_id', 'tag')),)
 

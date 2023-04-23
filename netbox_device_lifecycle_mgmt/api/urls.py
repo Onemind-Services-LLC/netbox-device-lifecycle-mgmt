@@ -10,5 +10,6 @@ router.register('software-notices', views.SoftwareNoticeViewSet)
 router.register('software-images', views.SoftwareImageViewSet)
 router.register('software-image-associations', views.SoftwareImageAssociationViewSet)
 router.register('service-providers', views.ServiceProviderViewSet)
+router.register('contracts', views.ContractViewSet)
 
 urlpatterns = router.urls
