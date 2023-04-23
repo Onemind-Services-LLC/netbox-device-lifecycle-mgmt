@@ -7,3 +7,6 @@ from .types import *
 class NetBoxDeviceLifecycleMgmtQuery(graphene.ObjectType):
     hardware_notice = ObjectField(HardwareNoticeType)
     hardware_notice_list = ObjectListField(HardwareNoticeType)
+
+    software_notice = ObjectField(SoftwareNoticeType)
+    software_notice_list = ObjectListField(SoftwareNoticeType)

@@ -1,14 +1,15 @@
 from django.contrib.contenttypes.models import ContentType
+from rest_framework import serializers
+
+from dcim.api.nested_serializers import NestedPlatformSerializer
 from netbox.api.fields import ContentTypeField
 from netbox.api.serializers import NetBoxModelSerializer
 from netbox.constants import NESTED_SERIALIZER_PREFIX
-from rest_framework import serializers
 from utilities.api import get_serializer_for_model
-
 from ..constants import HARDWARE_NOTICE_ASSIGNMENT_MODELS
 from ..models import *
 
-__all__ = ['HardwareNoticeSerializer']
+__all__ = ['HardwareNoticeSerializer', 'SoftwareNoticeSerializer']
 
 
 class HardwareNoticeSerializer(NetBoxModelSerializer):
@@ -48,3 +49,29 @@ class HardwareNoticeSerializer(NetBoxModelSerializer):
         serializer = get_serializer_for_model(obj.object, prefix=NESTED_SERIALIZER_PREFIX)
         context = {'request': self.context['request']}
         return serializer(obj.object, context=context).data
+
+
+class SoftwareNoticeSerializer(NetBoxModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='plugins-api:netbox_device_lifecycle_mgmt-api:softwarenotice-detail',
+    )
+
+    platform = NestedPlatformSerializer()
+
+    class Meta:
+        model = SoftwareNotice
+        fields = (
+            'id',
+            'url',
+            'display',
+            'platform',
+            'version',
+            'release_date',
+            'end_of_support_date',
+            'documentation_url',
+            'long_term_support',
+            'pre_release',
+            'created',
+            'last_updated',
+            'tags'
+        )

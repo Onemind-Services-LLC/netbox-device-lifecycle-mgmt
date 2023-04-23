@@ -6,11 +6,19 @@ from . import views
 app_name = 'netbox_device_lifecycle_mgmt'
 
 urlpatterns = (
-    # HardwareLCM
+    # Hardware notices
     path('hardware-notices/', views.HardwareNoticeListView.as_view(), name='hardwarenotice_list'),
     path('hardware-notices/add/', views.HardwareNoticeEditView.as_view(), name='hardwarenotice_add'),
     path('hardware-notices/edit/', views.HardwareNoticeBulkEditView.as_view(), name='hardwarenotice_bulk_edit'),
     path('hardware-notices/import/', views.HardwareNoticeBulkImportView.as_view(), name='hardwarenotice_import'),
     path('hardware-notices/delete/', views.HardwareNoticeBulkDeleteView.as_view(), name='hardwarenotice_bulk_delete'),
     path('hardware-notices/<int:pk>/', include(get_model_urls(app_name, 'hardwarenotice'))),
+
+    # Software notices
+    path('software-notices/', views.SoftwareNoticeListView.as_view(), name='softwarenotice_list'),
+    path('software-notices/add/', views.SoftwareNoticeEditView.as_view(), name='softwarenotice_add'),
+    path('software-notices/edit/', views.SoftwareNoticeBulkEditView.as_view(), name='softwarenotice_bulk_edit'),
+    path('software-notices/import/', views.SoftwareNoticeBulkImportView.as_view(), name='softwarenotice_import'),
+    path('software-notices/delete/', views.SoftwareNoticeBulkDeleteView.as_view(), name='softwarenotice_bulk_delete'),
+    path('software-notices/<int:pk>/', include(get_model_urls(app_name, 'softwarenotice'))),
 )

@@ -1,0 +1,70 @@
+{% extends 'generic/object.html' %}
+{% load render_table from django_tables2 %}
+
+{% block content %}
+    <div class="row mb-3">
+        <div class="col col-md-6">
+            <div class="card">
+                <h5 class="card-header">Software Notice</h5>
+                <div class="card-body">
+                    <table class="table table-hover attr-table">
+                        <tr>
+                            <td>Platform</td>
+                            <td>{{ object.platform|linkify }}</td>
+                        </tr>
+                        <tr>
+                            <td>Version</td>
+                            <td>{{ object.version }}</td>
+                        </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td>{{ object.description|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <td>Release Date</td>
+                            <td>{{ object.release_date|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <td>End of Support</td>
+                            <td>{{ object.end_of_support_date|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <td>Long Term Support</td>
+                            <td>
+                                {% if object.long_term_support %}
+                                    <span class="badge bg-success">Yes</span>
+                                {% else %}
+                                    <span class="badge bg-danger">No</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Pre Release</td>
+                            <td>
+                                {% if object.pre_release %}
+                                    <span class="badge bg-success">Yes</span>
+                                {% else %}
+                                    <span class="badge bg-danger">No</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% if object.documentation_url %}
+                            <tr>
+                                <td>Documentation URL</td>
+                                <td>
+                                    <a href="{{ object.documentation_url }}"
+                                       target="_blank">{{ object.documentation_url|placeholder }}</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-6">
+            {% include 'inc/panels/custom_fields.html' %}
+            {% include 'inc/panels/tags.html' %}
+            {% include 'inc/panels/comments.html' %}
+        </div>
+    </div>
+{% endblock %}

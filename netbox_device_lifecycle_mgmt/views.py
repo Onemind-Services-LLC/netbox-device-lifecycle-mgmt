@@ -7,6 +7,10 @@ from utilities.views import ViewTab, register_model_view
 from . import filtersets, forms, models, tables
 
 
+#
+# Hardware Notices
+#
+
 @register_model_view(models.HardwareNotice)
 class HardwareNoticeView(generic.ObjectView):
     queryset = models.HardwareNotice.objects.all()
@@ -74,3 +78,49 @@ class HardwareNoticeDevicesView(generic.ObjectChildrenView):
 
     def get_extra_context(self, request, instance):
         return {'table_config': f'{self.table.__name__}_config'}
+
+
+#
+# Software Notices
+#
+
+@register_model_view(models.SoftwareNotice)
+class SoftwareNoticeView(generic.ObjectView):
+    queryset = models.SoftwareNotice.objects.all()
+
+
+class SoftwareNoticeListView(generic.ObjectListView):
+    queryset = models.SoftwareNotice.objects.all()
+    table = tables.SoftwareNoticeTable
+    filterset = filtersets.SoftwareNoticeFilterSet
+    filterset_form = forms.SoftwareNoticeFilterForm
+
+
+@register_model_view(models.SoftwareNotice, 'edit')
+class SoftwareNoticeEditView(generic.ObjectEditView):
+    queryset = models.SoftwareNotice.objects.all()
+    form = forms.SoftwareNoticeForm
+
+
+@register_model_view(models.SoftwareNotice, 'delete')
+class SoftwareNoticeDeleteView(generic.ObjectDeleteView):
+    queryset = models.SoftwareNotice.objects.all()
+
+
+class SoftwareNoticeBulkEditView(generic.BulkEditView):
+    queryset = models.SoftwareNotice.objects.all()
+    table = tables.SoftwareNoticeTable
+    filterset = filtersets.SoftwareNoticeFilterSet
+    form = forms.SoftwareNoticeBulkEditForm
+
+
+class SoftwareNoticeBulkImportView(generic.BulkImportView):
+    queryset = models.SoftwareNotice.objects.all()
+    table = tables.SoftwareNoticeTable
+    model_form = forms.SoftwareNoticeImportForm
+
+
+class SoftwareNoticeBulkDeleteView(generic.BulkDeleteView):
+    queryset = models.SoftwareNotice.objects.all()
+    table = tables.SoftwareNoticeTable
+    filterset = filtersets.SoftwareNoticeFilterSet

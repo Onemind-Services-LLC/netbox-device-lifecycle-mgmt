@@ -4,6 +4,7 @@ from ..models import *
 
 __all__ = [
     'HardwareNoticeImportForm',
+    'SoftwareNoticeImportForm',
 ]
 
 
@@ -21,4 +22,18 @@ class HardwareNoticeImportForm(NetBoxModelImportForm):
             'tags',
             'comments',
             'documentation_url',
+        )
+
+
+class SoftwareNoticeImportForm(NetBoxModelImportForm):
+    class Meta:
+        model = SoftwareNotice
+        fields = (
+            'platform',
+            'version',
+            'release_date',
+            'end_of_support_date',
+            'documentation_url',
+            'long_term_support',
+            'pre_release',
         )

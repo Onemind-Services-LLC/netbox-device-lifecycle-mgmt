@@ -1,10 +1,15 @@
-from dcim.models import DeviceType, InventoryItem, ModuleType
 from django import forms
+
+from dcim.models import DeviceType, InventoryItem, ModuleType, Platform
 from netbox.forms import NetBoxModelForm
 from utilities.forms.fields import CommentField, DynamicModelChoiceField
 from utilities.forms.widgets import DatePicker
-
 from ..models import *
+
+__all__ = [
+    'HardwareNoticeForm',
+    'SoftwareNoticeForm',
+]
 
 
 class HardwareNoticeForm(NetBoxModelForm):
@@ -87,3 +92,34 @@ class HardwareNoticeForm(NetBoxModelForm):
             self.instance.object = self.cleaned_data[selected_objects[0]]
         else:
             self.instance.object = None
+
+
+class SoftwareNoticeForm(NetBoxModelForm):
+    platform = DynamicModelChoiceField(queryset=Platform.objects.all(), required=False, selector=True)
+
+    comments = CommentField()
+
+    fieldsets = (
+        (None, ('platform', 'version', 'description', 'tags')),
+        ('Lifecycle Management', ('release_date', 'end_of_support_date', 'long_term_support', 'pre_release')),
+        ('Additional Information', ('documentation_url',)),
+    )
+
+    class Meta:
+        model = SoftwareNotice
+        fields = [
+            'platform',
+            'version',
+            'release_date',
+            'end_of_support_date',
+            'documentation_url',
+            'long_term_support',
+            'pre_release',
+            'comments',
+            'tags',
+            'description',
+        ]
+        widgets = {
+            'release_date': DatePicker(),
+            'end_of_support_date': DatePicker(),
+        }

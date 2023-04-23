@@ -1,9 +1,9 @@
-from netbox.api.serializers import WritableNestedSerializer
 from rest_framework import serializers
 
+from netbox.api.serializers import WritableNestedSerializer
 from ..models import *
 
-__all__ = ['NestedHardwareNoticeSerializer']
+__all__ = ['NestedHardwareNoticeSerializer', 'NestedSoftwareNoticeSerializer']
 
 
 class NestedHardwareNoticeSerializer(WritableNestedSerializer):
@@ -13,6 +13,20 @@ class NestedHardwareNoticeSerializer(WritableNestedSerializer):
 
     class Meta:
         model = HardwareNotice
+        fields = (
+            'id',
+            'url',
+            'display',
+        )
+
+
+class NestedSoftwareNoticeSerializer(WritableNestedSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='plugins-api:netbox_device_lifecycle_mgmt-api:softwarenotice-detail',
+    )
+
+    class Meta:
+        model = SoftwareNotice
         fields = (
             'id',
             'url',

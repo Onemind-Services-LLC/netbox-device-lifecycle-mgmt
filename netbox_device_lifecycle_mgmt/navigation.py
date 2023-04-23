@@ -23,4 +23,25 @@ menu_items = (
             ),
         ),
     ),
+    PluginMenuItem(
+        link='plugins:netbox_device_lifecycle_mgmt:softwarenotice_list',
+        link_text='Software Notices',
+        permissions=['netbox_device_lifecycle_mgmt.view_softwarenotice'],
+        buttons=(
+            PluginMenuButton(
+                link='plugins:netbox_device_lifecycle_mgmt:softwarenotice_add',
+                title='Add',
+                icon_class='mdi mdi-plus-thick',
+                color=ButtonColorChoices.GREEN,
+                permissions=['netbox_device_lifecycle_mgmt.add_softwarenotice'],
+            ),
+            PluginMenuButton(
+                link='plugins:netbox_device_lifecycle_mgmt:softwarenotice_import',
+                title='Import',
+                icon_class='mdi mdi-upload',
+                color=ButtonColorChoices.CYAN,
+                permissions=['netbox_device_lifecycle_mgmt.add_softwarenotice'],
+            ),
+        ),
+    ),
 )
