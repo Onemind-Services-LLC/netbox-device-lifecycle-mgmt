@@ -3,7 +3,7 @@ import django_tables2 as tables
 from netbox.tables import NetBoxTable, columns
 from .models import *
 
-__all__ = ['HardwareNoticeTable']
+__all__ = ['HardwareNoticeTable', 'SoftwareNoticeTable', 'SoftwareImageTable']
 
 
 class HardwareNoticeTable(NetBoxTable):
@@ -75,4 +75,36 @@ class SoftwareNoticeTable(NetBoxTable):
             'version',
             'release_date',
             'end_of_support_date',
+        )
+
+
+class SoftwareImageTable(NetBoxTable):
+    software = tables.Column(linkify=True)
+
+    file_name = tables.Column(linkify=True)
+
+    class Meta(NetBoxTable.Meta):
+        model = SoftwareImage
+        fields = (
+            'pk',
+            'id',
+            'software',
+            'file_name',
+            'download_url',
+            'sha256sum_checksum',
+            'default_image',
+            'description',
+            'comments',
+            'tags',
+            'created',
+            'last_updated',
+        )
+
+        default_columns = (
+            'id',
+            'name',
+            'software',
+            'file_name',
+            'default_image',
+            'description',
         )

@@ -10,7 +10,8 @@ from .models import *
 
 __all__ = [
     'HardwareNoticeFilterSet',
-    'SoftwareNoticeFilterSet'
+    'SoftwareNoticeFilterSet',
+    'SoftwareImageFilterSet',
 ]
 
 
@@ -211,3 +212,38 @@ class SoftwareNoticeFilterSet(NetBoxModelFilterSet):
             return queryset
 
         return queryset.filter(description__icontains=value)
+
+
+class SoftwareImageFilterSet(NetBoxModelFilterSet):
+    software_id = django_filters.ModelMultipleChoiceFilter(
+        queryset=SoftwareNotice.objects.all(),
+        label='Software'
+    )
+
+    software = django_filters.ModelMultipleChoiceFilter(
+        #field_name='software__name',
+        queryset=SoftwareNotice.objects.all(),
+        to_field_name='_name',
+        label='Software (Name)'
+    )
+
+    default_image = django_filters.BooleanFilter(
+        label='Default image',
+    )
+
+    class Meta:
+        model = SoftwareImage
+        fields = (
+            'id',
+            'software_id',
+            'software',
+        )
+
+    def search(self, queryset, name, value):
+        if not value.strip():
+            return queryset
+
+        return queryset.filter(
+            Q(software__name__icontains=value) |
+            Q(software__description__icontains=value)
+        )

@@ -9,6 +9,7 @@ from ..models import *
 __all__ = [
     'HardwareNoticeFilterForm',
     'SoftwareNoticeFilterForm',
+    'SoftwareImageFilterForm'
 ]
 
 
@@ -112,5 +113,24 @@ class SoftwareNoticeFilterForm(NetBoxModelFilterSetForm):
     long_term_support = forms.BooleanField(required=False, label='Long Term Support')
 
     pre_release = forms.BooleanField(required=False, label='Pre Release')
+
+    tag = TagFilterField(model)
+
+
+class SoftwareImageFilterForm(NetBoxModelFilterSetForm):
+    model = SoftwareImage
+
+    fieldsets = (
+        (None, ('q', 'filter_id', 'tag')),
+        ('Software', ('software', 'default_image')),
+    )
+
+    software = DynamicModelMultipleChoiceField(
+        queryset=SoftwareNotice.objects.all(),
+        required=False,
+        label='Software',
+    )
+
+    default_image = forms.BooleanField(required=False, label='Default Image')
 
     tag = TagFilterField(model)

@@ -9,6 +9,7 @@ from ..models import *
 __all__ = [
     'HardwareNoticeForm',
     'SoftwareNoticeForm',
+    'SoftwareImageForm'
 ]
 
 
@@ -123,3 +124,27 @@ class SoftwareNoticeForm(NetBoxModelForm):
             'release_date': DatePicker(),
             'end_of_support_date': DatePicker(),
         }
+
+
+class SoftwareImageForm(NetBoxModelForm):
+    software = DynamicModelChoiceField(queryset=SoftwareNotice.objects.all(), selector=True)
+
+    comments = CommentField()
+
+    fieldsets = (
+        (None, ('file_name', 'software', 'description', 'tags')),
+        ('Attributes', ('download_url', 'sha256_checksum', 'default_image')),
+    )
+
+    class Meta:
+        model = SoftwareImage
+        fields = [
+            'software',
+            'file_name',
+            'download_url',
+            'sha256_checksum',
+            'default_image',
+            'description',
+            'comments',
+            'tags',
+        ]

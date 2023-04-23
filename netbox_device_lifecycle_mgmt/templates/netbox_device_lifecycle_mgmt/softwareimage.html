@@ -1,0 +1,46 @@
+{% extends 'generic/object.html' %}
+{% load render_table from django_tables2 %}
+
+{% block content %}
+    <div class="row mb-3">
+        <div class="col col-md-6">
+            <div class="card">
+                <h5 class="card-header">Software Image</h5>
+                <div class="card-body">
+                    <table class="table table-hover attr-table">
+                        <tr>
+                            <td>Software</td>
+                            <td>{{ object.software|linkify }}</td>
+                        </tr>
+                        <tr>
+                            <td>File Name</td>
+                            <td>{{ object.file_name }}</td>
+                        </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td>{{ object.description|placeholder }}</td>
+                        </tr>
+                        {% if object.download_url %}
+                            <tr>
+                                <td>Download URL</td>
+                                <td>
+                                    <a href="{{ object.download_url }}"
+                                       target="_blank">{{ object.download_url }}</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td>SHA256 Checksum</td>
+                            <td>{{ object.sha256_checksum|placeholder }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-6">
+            {% include 'inc/panels/custom_fields.html' %}
+            {% include 'inc/panels/tags.html' %}
+            {% include 'inc/panels/comments.html' %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,6 +1,6 @@
 from django.urls import include, path
-from utilities.urls import get_model_urls
 
+from utilities.urls import get_model_urls
 from . import views
 
 app_name = 'netbox_device_lifecycle_mgmt'
@@ -21,4 +21,12 @@ urlpatterns = (
     path('software-notices/import/', views.SoftwareNoticeBulkImportView.as_view(), name='softwarenotice_import'),
     path('software-notices/delete/', views.SoftwareNoticeBulkDeleteView.as_view(), name='softwarenotice_bulk_delete'),
     path('software-notices/<int:pk>/', include(get_model_urls(app_name, 'softwarenotice'))),
+
+    # Software Images
+    path('software-images/', views.SoftwareImageListView.as_view(), name='softwareimage_list'),
+    path('software-images/add/', views.SoftwareImageEditView.as_view(), name='softwareimage_add'),
+    path('software-images/edit/', views.SoftwareImageBulkEditView.as_view(), name='softwareimage_bulk_edit'),
+    path('software-images/import/', views.SoftwareImageBulkImportView.as_view(), name='softwareimage_import'),
+    path('software-images/delete/', views.SoftwareImageBulkDeleteView.as_view(), name='softwareimage_bulk_delete'),
+    path('software-images/<int:pk>/', include(get_model_urls(app_name, 'softwareimage'))),
 )

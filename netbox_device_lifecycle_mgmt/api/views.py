@@ -14,3 +14,9 @@ class SoftwareNoticeViewSet(NetBoxModelViewSet):
     queryset = SoftwareNotice.objects.all()
     serializer_class = SoftwareNoticeSerializer
     filterset_class = SoftwareNoticeFilterSet
+
+
+class SoftwareImageViewSet(NetBoxModelViewSet):
+    queryset = SoftwareImage.objects.all()
+    serializer_class = SoftwareImageSerializer
+    filterset_class = SoftwareImageFilterSet

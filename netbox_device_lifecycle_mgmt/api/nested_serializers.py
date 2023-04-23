@@ -32,3 +32,17 @@ class NestedSoftwareNoticeSerializer(WritableNestedSerializer):
             'url',
             'display',
         )
+
+
+class NestedSoftwareImageSerializer(WritableNestedSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='plugins-api:netbox_device_lifecycle_mgmt-api:softwareimage-detail',
+    )
+
+    class Meta:
+        model = SoftwareImage
+        fields = (
+            'id',
+            'url',
+            'display',
+        )

@@ -90,6 +90,15 @@ class HardwareNoticeDevicesView(generic.ObjectChildrenView):
 class SoftwareNoticeView(generic.ObjectView):
     queryset = models.SoftwareNotice.objects.all()
 
+    def get_extra_context(self, request, instance):
+        image_table = tables.SoftwareImageTable(instance.images.all())
+        image_table.columns.hide('software')
+        image_table.configure(request=request)
+
+        return {
+            'related_images': image_table,
+        }
+
 
 class SoftwareNoticeListView(generic.ObjectListView):
     queryset = models.SoftwareNotice.objects.all()
@@ -162,3 +171,49 @@ class SoftwareNoticeVirtualMachinesView(generic.ObjectChildrenView):
 
     def get_extra_context(self, request, instance):
         return {'table_config': f'{self.table.__name__}_config'}
+
+
+#
+# Software Images
+#
+
+@register_model_view(models.SoftwareImage)
+class SoftwareImageView(generic.ObjectView):
+    queryset = models.SoftwareImage.objects.all()
+
+
+class SoftwareImageListView(generic.ObjectListView):
+    queryset = models.SoftwareImage.objects.all()
+    table = tables.SoftwareImageTable
+    filterset = filtersets.SoftwareImageFilterSet
+    filterset_form = forms.SoftwareImageFilterForm
+
+
+@register_model_view(models.SoftwareImage, 'edit')
+class SoftwareImageEditView(generic.ObjectEditView):
+    queryset = models.SoftwareImage.objects.all()
+    form = forms.SoftwareImageForm
+
+
+@register_model_view(models.SoftwareImage, 'delete')
+class SoftwareImageDeleteView(generic.ObjectDeleteView):
+    queryset = models.SoftwareImage.objects.all()
+
+
+class SoftwareImageBulkEditView(generic.BulkEditView):
+    queryset = models.SoftwareImage.objects.all()
+    table = tables.SoftwareImageTable
+    filterset = filtersets.SoftwareImageFilterSet
+    form = forms.SoftwareImageBulkEditForm
+
+
+class SoftwareImageBulkImportView(generic.BulkImportView):
+    queryset = models.SoftwareImage.objects.all()
+    table = tables.SoftwareImageTable
+    model_form = forms.SoftwareImageImportForm
+
+
+class SoftwareImageBulkDeleteView(generic.BulkDeleteView):
+    queryset = models.SoftwareImage.objects.all()
+    table = tables.SoftwareImageTable
+    filterset = filtersets.SoftwareImageFilterSet

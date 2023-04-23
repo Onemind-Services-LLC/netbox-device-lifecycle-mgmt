@@ -5,6 +5,7 @@ from ..models import *
 __all__ = [
     'HardwareNoticeImportForm',
     'SoftwareNoticeImportForm',
+    'SoftwareImageImportForm',
 ]
 
 
@@ -21,6 +22,7 @@ class HardwareNoticeImportForm(NetBoxModelImportForm):
             'description',
             'tags',
             'comments',
+            'description',
             'documentation_url',
         )
 
@@ -36,4 +38,22 @@ class SoftwareNoticeImportForm(NetBoxModelImportForm):
             'documentation_url',
             'long_term_support',
             'pre_release',
+            'description',
+            'tags',
+            'comments',
+        )
+
+
+class SoftwareImageImportForm(NetBoxModelImportForm):
+    class Meta:
+        model = SoftwareImage
+        fields = (
+            'software',
+            'file_name',
+            'download_url',
+            'sha256_checksum',
+            'default_image',
+            'description',
+            'tags',
+            'comments',
         )

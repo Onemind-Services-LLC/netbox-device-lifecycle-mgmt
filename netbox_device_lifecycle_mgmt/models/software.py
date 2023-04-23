@@ -1,11 +1,12 @@
 from datetime import date
 
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 
 from netbox.models import PrimaryModel
 
-__all__ = ['SoftwareNotice']
+__all__ = ['SoftwareNotice', 'SoftwareImage']
 
 
 class SoftwareNotice(PrimaryModel):
@@ -42,6 +43,11 @@ class SoftwareNotice(PrimaryModel):
         default=False,
     )
 
+    # Cached fields
+    _name = models.CharField(
+        max_length=255,
+    )
+
     clone_fields = (
         'platform',
         'release_date',
@@ -67,9 +73,83 @@ class SoftwareNotice(PrimaryModel):
     def get_absolute_url(self):
         return reverse('plugins:netbox_device_lifecycle_mgmt:softwarenotice', args=[self.pk])
 
+    def save(self, *args, **kwargs):
+        self._name = str(self.platform.name)
+        super().save(*args, **kwargs)
+
     @property
     def expired(self):
         """
         Return True if the software notice is expired.
         """
         return self.end_of_support_date and self.end_of_support_date < date.today()
+
+    @property
+    def name(self):
+        """
+        Return the name of the software notice.
+        """
+        return self._name
+
+
+class SoftwareImage(PrimaryModel):
+    software = models.ForeignKey(
+        to='SoftwareNotice',
+        on_delete=models.CASCADE,
+        related_name='images',
+    )
+
+    file_name = models.CharField(
+        max_length=255,
+    )
+
+    download_url = models.URLField(
+        blank=True
+    )
+
+    sha256_checksum = models.CharField(
+        max_length=64,
+        blank=True,
+    )
+
+    default_image = models.BooleanField(
+        default=False,
+    )
+
+    clone_fields = (
+        'software',
+        'default_image',
+    )
+
+    prerequisite_models = (
+        'netbox_device_lifecycle_mgmt.softwarenotice',
+    )
+
+    class Meta:
+        ordering = ['software', 'default_image', 'file_name']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['software', 'file_name'],
+                name='%(app_label)s_%(class)s_unique_software_image',
+                violation_error_message='A software image already exists for this software and file name.',
+            ),
+        ]
+
+    def __str__(self):
+        return self.file_name
+
+    def get_absolute_url(self):
+        return reverse('plugins:netbox_device_lifecycle_mgmt:softwareimage', args=[self.pk])
+
+    def clean(self):
+        super().clean()
+
+        if self.sha256_checksum and len(self.sha256_checksum) != 64:
+            raise ValidationError({
+                'sha256_checksum': 'Invalid SHA256 checksum.',
+            })
+
+    def save(self, *args, **kwargs):
+        if self.default_image:
+            self.software.images.exclude(pk=self.pk).update(default_image=False)
+        super().save(*args, **kwargs)

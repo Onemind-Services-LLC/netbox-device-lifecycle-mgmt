@@ -6,10 +6,11 @@ from netbox.api.fields import ContentTypeField
 from netbox.api.serializers import NetBoxModelSerializer
 from netbox.constants import NESTED_SERIALIZER_PREFIX
 from utilities.api import get_serializer_for_model
+from .nested_serializers import *
 from ..constants import HARDWARE_NOTICE_ASSIGNMENT_MODELS
 from ..models import *
 
-__all__ = ['HardwareNoticeSerializer', 'SoftwareNoticeSerializer']
+__all__ = ['HardwareNoticeSerializer', 'SoftwareNoticeSerializer', 'SoftwareImageSerializer']
 
 
 class HardwareNoticeSerializer(NetBoxModelSerializer):
@@ -40,6 +41,7 @@ class HardwareNoticeSerializer(NetBoxModelSerializer):
             'end_of_security_updates_date',
             'documentation_url',
             'comments',
+            'description',
             'tags',
             'created',
             'last_updated',
@@ -71,6 +73,34 @@ class SoftwareNoticeSerializer(NetBoxModelSerializer):
             'documentation_url',
             'long_term_support',
             'pre_release',
+            'comments',
+            'description',
+            'created',
+            'last_updated',
+            'tags'
+        )
+
+
+class SoftwareImageSerializer(NetBoxModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='plugins-api:netbox_device_lifecycle_mgmt-api:softwareimage-detail',
+    )
+
+    software = NestedSoftwareNoticeSerializer()
+
+    class Meta:
+        model = SoftwareImage
+        fields = (
+            'id',
+            'url',
+            'display',
+            'software',
+            'file_name',
+            'download_url',
+            'sha256_checksum',
+            'default_image',
+            'comments',
+            'description',
             'created',
             'last_updated',
             'tags'
