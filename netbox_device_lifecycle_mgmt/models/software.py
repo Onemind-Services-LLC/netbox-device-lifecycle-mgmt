@@ -3,7 +3,6 @@ from datetime import date
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
-
 from netbox.models import PrimaryModel
 
 __all__ = ['SoftwareNotice', 'SoftwareImage']
@@ -103,9 +102,7 @@ class SoftwareImage(PrimaryModel):
         max_length=255,
     )
 
-    download_url = models.URLField(
-        blank=True
-    )
+    download_url = models.URLField(blank=True)
 
     sha256_checksum = models.CharField(
         max_length=64,
@@ -121,9 +118,7 @@ class SoftwareImage(PrimaryModel):
         'default_image',
     )
 
-    prerequisite_models = (
-        'netbox_device_lifecycle_mgmt.softwarenotice',
-    )
+    prerequisite_models = ('netbox_device_lifecycle_mgmt.softwarenotice',)
 
     class Meta:
         ordering = ['software', 'default_image', 'file_name']
@@ -145,9 +140,11 @@ class SoftwareImage(PrimaryModel):
         super().clean()
 
         if self.sha256_checksum and len(self.sha256_checksum) != 64:
-            raise ValidationError({
-                'sha256_checksum': 'Invalid SHA256 checksum.',
-            })
+            raise ValidationError(
+                {
+                    'sha256_checksum': 'Invalid SHA256 checksum.',
+                },
+            )
 
     def save(self, *args, **kwargs):
         if self.default_image:

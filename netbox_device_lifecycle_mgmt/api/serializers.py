@@ -1,14 +1,14 @@
-from django.contrib.contenttypes.models import ContentType
-from rest_framework import serializers
-
 from dcim.api.nested_serializers import NestedPlatformSerializer
+from django.contrib.contenttypes.models import ContentType
 from netbox.api.fields import ContentTypeField
 from netbox.api.serializers import NetBoxModelSerializer
 from netbox.constants import NESTED_SERIALIZER_PREFIX
+from rest_framework import serializers
 from utilities.api import get_serializer_for_model
-from .nested_serializers import *
+
 from ..constants import HARDWARE_NOTICE_ASSIGNMENT_MODELS
 from ..models import *
+from .nested_serializers import *
 
 __all__ = ['HardwareNoticeSerializer', 'SoftwareNoticeSerializer', 'SoftwareImageSerializer']
 
@@ -77,7 +77,7 @@ class SoftwareNoticeSerializer(NetBoxModelSerializer):
             'description',
             'created',
             'last_updated',
-            'tags'
+            'tags',
         )
 
 
@@ -103,5 +103,5 @@ class SoftwareImageSerializer(NetBoxModelSerializer):
             'description',
             'created',
             'last_updated',
-            'tags'
+            'tags',
         )

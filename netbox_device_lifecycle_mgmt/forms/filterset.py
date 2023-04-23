@@ -1,16 +1,12 @@
-from django import forms
-
 from dcim.models import Platform
+from django import forms
 from netbox.forms import NetBoxModelFilterSetForm
 from utilities.forms.fields import DynamicModelMultipleChoiceField, TagFilterField
 from utilities.forms.widgets import DatePicker
+
 from ..models import *
 
-__all__ = [
-    'HardwareNoticeFilterForm',
-    'SoftwareNoticeFilterForm',
-    'SoftwareImageFilterForm'
-]
+__all__ = ['HardwareNoticeFilterForm', 'SoftwareNoticeFilterForm', 'SoftwareImageFilterForm']
 
 
 class HardwareNoticeFilterForm(NetBoxModelFilterSetForm):
@@ -85,7 +81,7 @@ class SoftwareNoticeFilterForm(NetBoxModelFilterSetForm):
         ('Platform', ('device_platform', 'version')),
         ('Release Date', ('release_date', 'release_date__before', 'release_date__after')),
         ('End of Support', ('end_of_support', 'end_of_support__before', 'end_of_support__after')),
-        ('Attributes', ('documentation_url', 'long_term_support', 'pre_release'))
+        ('Attributes', ('documentation_url', 'long_term_support', 'pre_release')),
     )
 
     device_platform = DynamicModelMultipleChoiceField(

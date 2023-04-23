@@ -1,11 +1,11 @@
 import datetime
 
 import django_filters
-from django.db.models import Q
-
 from dcim.models import Platform
+from django.db.models import Q
 from netbox.filtersets import NetBoxModelFilterSet
 from utilities.filters import ContentTypeFilter
+
 from .models import *
 
 __all__ = [
@@ -147,15 +147,12 @@ class HardwareNoticeFilterSet(NetBoxModelFilterSet):
 
 
 class SoftwareNoticeFilterSet(NetBoxModelFilterSet):
-    platform_id = django_filters.ModelMultipleChoiceFilter(
-        queryset=Platform.objects.all(),
-        label='Platform'
-    )
+    platform_id = django_filters.ModelMultipleChoiceFilter(queryset=Platform.objects.all(), label='Platform')
     platform = django_filters.ModelMultipleChoiceFilter(
         field_name='platform__slug',
         queryset=Platform.objects.all(),
         to_field_name='slug',
-        label='Platform (slug)'
+        label='Platform (slug)',
     )
 
     documentation_url = django_filters.CharFilter(
@@ -215,16 +212,12 @@ class SoftwareNoticeFilterSet(NetBoxModelFilterSet):
 
 
 class SoftwareImageFilterSet(NetBoxModelFilterSet):
-    software_id = django_filters.ModelMultipleChoiceFilter(
-        queryset=SoftwareNotice.objects.all(),
-        label='Software'
-    )
+    software_id = django_filters.ModelMultipleChoiceFilter(queryset=SoftwareNotice.objects.all(), label='Software')
 
     software = django_filters.ModelMultipleChoiceFilter(
-        #field_name='software__name',
         queryset=SoftwareNotice.objects.all(),
         to_field_name='_name',
-        label='Software (Name)'
+        label='Software (Name)',
     )
 
     default_image = django_filters.BooleanFilter(
@@ -243,7 +236,4 @@ class SoftwareImageFilterSet(NetBoxModelFilterSet):
         if not value.strip():
             return queryset
 
-        return queryset.filter(
-            Q(software__name__icontains=value) |
-            Q(software__description__icontains=value)
-        )
+        return queryset.filter(Q(software__name__icontains=value) | Q(software__description__icontains=value))

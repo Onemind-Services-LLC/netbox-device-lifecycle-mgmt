@@ -1,16 +1,12 @@
-from django import forms
-
 from dcim.models import DeviceType, InventoryItem, ModuleType, Platform
+from django import forms
 from netbox.forms import NetBoxModelForm
 from utilities.forms.fields import CommentField, DynamicModelChoiceField
 from utilities.forms.widgets import DatePicker
+
 from ..models import *
 
-__all__ = [
-    'HardwareNoticeForm',
-    'SoftwareNoticeForm',
-    'SoftwareImageForm'
-]
+__all__ = ['HardwareNoticeForm', 'SoftwareNoticeForm', 'SoftwareImageForm']
 
 
 class HardwareNoticeForm(NetBoxModelForm):

@@ -1,7 +1,8 @@
 from netbox.api.viewsets import NetBoxModelViewSet
-from .serializers import *
+
 from ..filtersets import *
 from ..models import *
+from .serializers import *
 
 
 class HardwareNoticeViewSet(NetBoxModelViewSet):

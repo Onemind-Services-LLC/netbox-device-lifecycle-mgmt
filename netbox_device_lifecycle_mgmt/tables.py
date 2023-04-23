@@ -1,6 +1,6 @@
 import django_tables2 as tables
-
 from netbox.tables import NetBoxTable, columns
+
 from .models import *
 
 __all__ = ['HardwareNoticeTable', 'SoftwareNoticeTable', 'SoftwareImageTable']
