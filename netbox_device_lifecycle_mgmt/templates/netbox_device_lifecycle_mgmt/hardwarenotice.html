@@ -1,0 +1,66 @@
+{% extends 'generic/object.html' %}
+{% load render_table from django_tables2 %}
+
+{% block content %}
+    <div class="row mb-3">
+        <div class="col col-md-6">
+            <div class="card">
+                <h5 class="card-header">Hardware Notice</h5>
+                <div class="card-body">
+                    <table class="table table-hover attr-table">
+                        {% if object.device_type %}
+                            <tr>
+                                <td>Device Type</td>
+                                <td>{{ object.device_type|linkify }}</td>
+                            </tr>
+                        {% endif %}
+                        {% if object.inventory_item %}
+                            <tr>
+                                <td>Inventory Item</td>
+                                <td>{{ object.inventory_item|linkify }}</td>
+                            </tr>
+                        {% endif %}
+                        <tr>
+                            <td>Description</td>
+                            <td>{{ object.description|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <td>Release Date</td>
+                            <td>{{ object.release_date|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <td>End of Sale</td>
+                            <td>{{ object.end_of_sale_date|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <td>End of Support</td>
+                            <td>{{ object.end_of_support_date|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <td>End of Software Release</td>
+                            <td>{{ object.end_of_sw_releases_date|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <td>End of Security Support</td>
+                            <td>{{ object.end_of_security_updates_date|placeholder }}</td>
+                        </tr>
+                        {% if object.documentation_url %}
+                            <tr>
+                                <td>Documentation URL</td>
+                                <td>
+                                    <a href="{{ object.documentation_url }}"
+                                       target="_blank">{{ object.documentation_url|placeholder }}</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-6">
+            {% include 'inc/panels/custom_fields.html' %}
+            {% include 'inc/panels/tags.html' %}
+            {% include 'inc/panels/comments.html' %}
+        </div>
+    </div>
+{% endblock %}

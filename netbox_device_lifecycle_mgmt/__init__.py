@@ -7,7 +7,7 @@ metadata = metadata('netbox_device_lifecycle_mgmt')
 
 class NetBoxDeviceLCMConfig(PluginConfig):
     name = metadata.get('Name').replace('-', '_')
-    verbose_name = metadata.get('Summary')
+    verbose_name = 'Device Lifecycle Management'
     description = metadata.get('Description')
     version = metadata.get('Version')
     author = metadata.get('Author')

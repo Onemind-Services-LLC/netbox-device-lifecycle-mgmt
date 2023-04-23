@@ -3,7 +3,7 @@ from setuptools import find_packages, setup
 setup(
     name='netbox-device-lifecycle-mgmt',
     version='0.0.1',
-    description='Netbox Device Lifecycle Management',
+    description='Device Lifecycle Management',
     long_description='A plugin for Netbox that adds lifecycle management to devices',
     url='https://github.com/Onemind-Services-LLC/netbox-device-lifecycle-mgmt/',
     author='Abhimanyu Saharan',
