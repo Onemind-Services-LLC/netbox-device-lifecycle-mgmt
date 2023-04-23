@@ -13,7 +13,7 @@
                                                 type="button" data-bs-toggle="collapse"
                                                 data-bs-target="#collapse{{ object.pk }}" aria-expanded="true"
                                                 aria-controls="collapse{{ object.pk }}">
-                                            {{ object }}
+                                            {{ object.object|meta:'verbose_name'|bettertitle }} - {{ object }}
                                         </button>
                                     </h2>
                                     <div id="collapse{{ object.pk }}" class="accordion-collapse collapse"
