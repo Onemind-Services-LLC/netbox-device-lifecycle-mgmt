@@ -1,0 +1,44 @@
+{% if perms.netbox_device_lifecycle_mgmt.view_hardwarenotice %}
+    <div class="row">
+        <div class="col col-md-12">
+            <div class="card">
+                <h5 class="card-header">Hardware Notice</h5>
+                <div class="card-body">
+                    <table class="table table-hover attr-table">
+                        <tr>
+                            <td>Name</td>
+                            <td>
+                                <a href="{{ object.get_absolute_url }}">{{ object }}</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Release Date</td>
+                            <td>{{ object.release_date|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <td>End of Support</td>
+                            <td>{{ object.end_of_support_date|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <td>End of Software Release</td>
+                            <td>{{ object.end_of_sw_releases_date|placeholder }}</td>
+                        </tr>
+                        <tr>
+                            <td>End of Security Support</td>
+                            <td>{{ object.end_of_security_updates_date|placeholder }}</td>
+                        </tr>
+                        {% if object.documentation_url %}
+                            <tr>
+                                <td>Documentation URL</td>
+                                <td>
+                                    <a href="{{ object.documentation_url }}"
+                                       target="_blank">{{ object.documentation_url|placeholder }}</a>
+                                </td>
+                            </tr>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

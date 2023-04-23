@@ -8,16 +8,16 @@
                         <div class="accordion" id="hardware_notice">
                             {% for object in objects %}
                                 <div class="accordion-item">
-                                    <h2 class="accordion-header" id="heading{{ object.pk }}">
+                                    <h2 class="accordion-header" id="hw_heading{{ object.pk }}">
                                         <button class="accordion-button collapsed{% if object.expired %} text-danger{% endif %}"
                                                 type="button" data-bs-toggle="collapse"
-                                                data-bs-target="#collapse{{ object.pk }}" aria-expanded="true"
-                                                aria-controls="collapse{{ object.pk }}">
+                                                data-bs-target="#hw_collapse{{ object.pk }}" aria-expanded="true"
+                                                aria-controls="hw_collapse{{ object.pk }}">
                                             {{ object.object|meta:'verbose_name'|bettertitle }} - {{ object }}
                                         </button>
                                     </h2>
-                                    <div id="collapse{{ object.pk }}" class="accordion-collapse collapse"
-                                         aria-labelledby="heading{{ object.pk }}"
+                                    <div id="hw_collapse{{ object.pk }}" class="accordion-collapse collapse"
+                                         aria-labelledby="hw_heading{{ object.pk }}"
                                          data-bs-parent="#hardware_notice">
                                         <div class="accordion-body">
                                             <table class="table table-hover attr-table">

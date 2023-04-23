@@ -3,7 +3,9 @@ from dcim.models import Device
 from dcim.tables import DeviceTable
 from netbox.views import generic
 from utilities.views import ViewTab, register_model_view
-
+from virtualization.filtersets import VirtualMachineFilterSet
+from virtualization.models import VirtualMachine
+from virtualization.tables import VirtualMachineTable
 from . import filtersets, forms, models, tables
 
 
@@ -124,3 +126,39 @@ class SoftwareNoticeBulkDeleteView(generic.BulkDeleteView):
     queryset = models.SoftwareNotice.objects.all()
     table = tables.SoftwareNoticeTable
     filterset = filtersets.SoftwareNoticeFilterSet
+
+
+@register_model_view(models.SoftwareNotice, 'devices')
+class SoftwareNoticeDevicesView(generic.ObjectChildrenView):
+    queryset = models.SoftwareNotice.objects.all()
+    child_model = Device
+    table = DeviceTable
+    filterset = DeviceFilterSet
+    template_name = 'netbox_device_lifecycle_mgmt/inc/view_tab.html'
+    tab = ViewTab(label='Devices', badge=lambda obj: obj.platform.devices.count(), hide_if_empty=True)
+
+    def get_children(self, request, parent):
+        return self.child_model.objects.restrict(request.user, 'view').filter(
+            platform=parent.platform
+        )
+
+    def get_extra_context(self, request, instance):
+        return {'table_config': f'{self.table.__name__}_config'}
+
+
+@register_model_view(models.SoftwareNotice, 'virtual-machines')
+class SoftwareNoticeVirtualMachinesView(generic.ObjectChildrenView):
+    queryset = models.SoftwareNotice.objects.all()
+    child_model = VirtualMachine
+    table = VirtualMachineTable
+    filterset = VirtualMachineFilterSet
+    template_name = 'netbox_device_lifecycle_mgmt/inc/view_tab.html'
+    tab = ViewTab(label='Virtual Machines', badge=lambda obj: obj.platform.virtual_machines.count(), hide_if_empty=True)
+
+    def get_children(self, request, parent):
+        return self.child_model.objects.restrict(request.user, 'view').filter(
+            platform=parent.platform
+        )
+
+    def get_extra_context(self, request, instance):
+        return {'table_config': f'{self.table.__name__}_config'}

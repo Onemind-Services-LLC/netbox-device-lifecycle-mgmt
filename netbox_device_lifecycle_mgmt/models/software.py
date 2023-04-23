@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db import models
 from django.urls import reverse
 
@@ -64,3 +66,10 @@ class SoftwareNotice(PrimaryModel):
 
     def get_absolute_url(self):
         return reverse('plugins:netbox_device_lifecycle_mgmt:softwarenotice', args=[self.pk])
+
+    @property
+    def expired(self):
+        """
+        Return True if the software notice is expired.
+        """
+        return self.end_of_support_date and self.end_of_support_date < date.today()

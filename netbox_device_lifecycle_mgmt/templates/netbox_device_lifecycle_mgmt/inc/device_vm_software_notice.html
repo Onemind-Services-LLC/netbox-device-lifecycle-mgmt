@@ -1,0 +1,82 @@
+{% if perms.netbox_device_lifecycle_mgmt.view_softwarenotice %}
+    {% if objects %}
+        <div class="row">
+            <div class="col col-md-12">
+                <div class="card">
+                    <h5 class="card-header">Software Notices</h5>
+                    <div class="card-body">
+                        <div class="accordion" id="software_notice">
+                            {% for object in objects %}
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="sw_heading{{ object.pk }}">
+                                        <button class="accordion-button collapsed{% if object.expired %} text-danger{% endif %}"
+                                                type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#sw_collapse{{ object.pk }}" aria-expanded="true"
+                                                aria-controls="sw_collapse{{ object.pk }}">
+                                            Platform: {{ object }}
+                                        </button>
+                                    </h2>
+                                    <div id="sw_collapse{{ object.pk }}" class="accordion-collapse collapse"
+                                         aria-labelledby="sw_heading{{ object.pk }}"
+                                         data-bs-parent="#software_notice">
+                                        <div class="accordion-body">
+                                            <table class="table table-hover attr-table">
+                                                <tr>
+                                                    <td>ID</td>
+                                                    <td>
+                                                        <a href="{{ object.get_absolute_url }}">{{ object.id }}</a>
+                                                    </td>
+                                                </tr>
+                                                {% if object.release_date %}
+                                                    <tr>
+                                                        <td>Release Date</td>
+                                                        <td>{{ object.release_date }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                                {% if object.end_of_support_date %}
+                                                    <tr>
+                                                        <td>End of Support Date</td>
+                                                        <td>{{ object.end_of_support_date }}</td>
+                                                    </tr>
+                                                {% endif %}
+                                                <tr>
+                                                    <td>Long Term Support</td>
+                                                    <td>
+                                                        {% if object.long_term_support %}
+                                                            <span class="badge bg-success">Yes</span>
+                                                        {% else %}
+                                                            <span class="badge bg-danger">No</span>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Pre Release</td>
+                                                    <td>
+                                                        {% if object.pre_release %}
+                                                            <span class="badge bg-success">Yes</span>
+                                                        {% else %}
+                                                            <span class="badge bg-danger">No</span>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                {% if object.documentation_url %}
+                                                    <tr>
+                                                        <td>Documentation URL</td>
+                                                        <td>
+                                                            <a href="{{ object.documentation_url }}"
+                                                               target="_blank">{{ object.documentation_url|placeholder }}</a>
+                                                        </td>
+                                                    </tr>
+                                                {% endif %}
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endif %}

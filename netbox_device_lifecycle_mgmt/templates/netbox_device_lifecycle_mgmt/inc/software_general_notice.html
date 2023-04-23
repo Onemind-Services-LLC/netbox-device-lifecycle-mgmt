@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col col-md-12">
             <div class="card">
-                <h5 class="card-header">Hardware Notice</h5>
+                <h5 class="card-header">Software Notice</h5>
                 <div class="card-body">
                     <table class="table table-hover attr-table">
                         <tr>
@@ -16,20 +16,28 @@
                             <td>{{ object.release_date|placeholder }}</td>
                         </tr>
                         <tr>
-                            <td>End of Sale</td>
-                            <td>{{ object.end_of_sale_date|placeholder }}</td>
-                        </tr>
-                        <tr>
                             <td>End of Support</td>
                             <td>{{ object.end_of_support_date|placeholder }}</td>
                         </tr>
                         <tr>
-                            <td>End of Software Release</td>
-                            <td>{{ object.end_of_sw_releases_date|placeholder }}</td>
+                            <td>Long Term Support</td>
+                            <td>
+                                {% if object.long_term_support %}
+                                    <span class="badge bg-success">Yes</span>
+                                {% else %}
+                                    <span class="badge bg-danger">No</span>
+                                {% endif %}
+                            </td>
                         </tr>
                         <tr>
-                            <td>End of Security Support</td>
-                            <td>{{ object.end_of_security_updates_date|placeholder }}</td>
+                            <td>Pre Release</td>
+                            <td>
+                                {% if object.pre_release %}
+                                    <span class="badge bg-success">Yes</span>
+                                {% else %}
+                                    <span class="badge bg-danger">No</span>
+                                {% endif %}
+                            </td>
                         </tr>
                         {% if object.documentation_url %}
                             <tr>
