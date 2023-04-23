@@ -73,14 +73,45 @@ class SoftwareGeneralNoticeExtension(PluginTemplateExtension):
 
 class DeviceVmSoftwareNoticeExtension(PluginTemplateExtension):
     def left_page(self):
+        qs_filters = {}
+
+        if self.model == 'dcim.devicetype':
+            qs_filters['device_types__id'] = self.context['object'].id
+        elif self.model == 'dcim.devicerole':
+            qs_filters['device_roles__id'] = self.context['object'].id
+        elif self.model == 'dcim.device':
+            qs_filters['devices__id'] = self.context['object'].id
+        elif self.model == 'dcim.inventoryitem':
+            qs_filters['inventory_items__id'] = self.context['object'].id
+        elif self.model == 'virtualization.virtualmachine':
+            qs_filters['virtual_machines__id'] = self.context['object'].id
+        else:
+            return ''
+
+        associations = SoftwareImageAssociation.objects.filter(**qs_filters)
+
         return self.render(
             'netbox_device_lifecycle_mgmt/inc/device_vm_software_notice.html',
-            extra_context={'objects': SoftwareNotice.objects.filter(platform=self.context['object'].platform)},
+            extra_context={
+                'objects': associations,
+            },
         )
+
+
+class DeviceTypeSoftwareNoticeExtension(DeviceVmSoftwareNoticeExtension):
+    model = 'dcim.devicetype'
+
+
+class DeviceRoleSoftwareNoticeExtension(DeviceVmSoftwareNoticeExtension):
+    model = 'dcim.devicerole'
 
 
 class DeviceSoftwareNoticeExtension(DeviceVmSoftwareNoticeExtension):
     model = 'dcim.device'
+
+
+class InventoryItemSoftwareNoticeExtension(DeviceVmSoftwareNoticeExtension):
+    model = 'dcim.inventoryitem'
 
 
 class VirtualMachineSoftwareNoticeExtension(DeviceVmSoftwareNoticeExtension):
@@ -95,4 +126,7 @@ template_extensions = [
     SoftwareGeneralNoticeExtension,
     DeviceSoftwareNoticeExtension,
     VirtualMachineSoftwareNoticeExtension,
+    DeviceTypeSoftwareNoticeExtension,
+    DeviceRoleSoftwareNoticeExtension,
+    InventoryItemSoftwareNoticeExtension,
 ]
