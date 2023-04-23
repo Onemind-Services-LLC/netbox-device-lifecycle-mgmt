@@ -20,6 +20,7 @@ class HardwareNoticeTable(NetBoxTable):
             'id',
             'device_type',
             'inventory_item',
+            'description',
             'release_date',
             'end_of_sale_date',
             'end_of_support_date',
@@ -35,6 +36,7 @@ class HardwareNoticeTable(NetBoxTable):
             'id',
             'device_type',
             'inventory_item',
+            'description',
             'release_date',
             'end_of_sale_date',
         )

@@ -1,3 +1,7 @@
+from dcim.api.serializers import (
+    NestedDeviceTypeSerializer,
+    NestedInventoryItemSerializer,
+)
 from netbox.api.serializers import NetBoxModelSerializer
 from rest_framework import serializers
 
@@ -9,6 +13,14 @@ __all__ = ['HardwareNoticeSerializer']
 class HardwareNoticeSerializer(NetBoxModelSerializer):
     url = serializers.HyperlinkedIdentityField(
         view_name='plugins-api:netbox_device_lifecycle_mgmt-api:hardwarenotice-detail',
+    )
+
+    device_type = NestedDeviceTypeSerializer(
+        required=False,
+    )
+
+    inventory_item = NestedInventoryItemSerializer(
+        required=False,
     )
 
     class Meta:

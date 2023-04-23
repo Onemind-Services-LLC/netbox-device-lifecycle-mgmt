@@ -14,6 +14,13 @@ menu_items = (
                 color=ButtonColorChoices.GREEN,
                 permissions=['netbox_device_lifecycle_mgmt.add_hardwarenotice'],
             ),
+            PluginMenuButton(
+                link='plugins:netbox_device_lifecycle_mgmt:hardwarenotice_import',
+                title='Import',
+                icon_class='mdi mdi-upload',
+                color=ButtonColorChoices.CYAN,
+                permissions=['netbox_device_lifecycle_mgmt.add_hardwarenotice'],
+            ),
         ),
     ),
 )

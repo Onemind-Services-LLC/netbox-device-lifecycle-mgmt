@@ -1,6 +1,6 @@
 from django.db.models import Q
-
 from extras.plugins import PluginTemplateExtension
+
 from .models import HardwareNotice
 
 
@@ -16,9 +16,7 @@ class GeneralNoticeExtension(PluginTemplateExtension):
         if filters:
             return self.render(
                 'netbox_device_lifecycle_mgmt/inc/general_notice.html',
-                extra_context={
-                    'object': HardwareNotice.objects.filter(**filters).first()
-                }
+                extra_context={'object': HardwareNotice.objects.filter(**filters).first()},
             )
         return ''
 
@@ -41,12 +39,14 @@ class DeviceHardwareNoticeExtension(PluginTemplateExtension):
             'netbox_device_lifecycle_mgmt/inc/device_notice.html',
             extra_context={
                 'objects': HardwareNotice.objects.filter(
-                    Q(device_type=obj.device_type) |
-                    Q(inventory_item__in=[i.pk for i in obj.inventoryitems.all()])
-                )
-            }
+                    Q(device_type=obj.device_type) | Q(inventory_item__in=[i.pk for i in obj.inventoryitems.all()]),
+                ),
+            },
         )
 
 
-template_extensions = [DeviceTypeHardwareNoticeExtension, InventoryItemHardwareNoticeExtension,
-                       DeviceHardwareNoticeExtension]
+template_extensions = [
+    DeviceTypeHardwareNoticeExtension,
+    InventoryItemHardwareNoticeExtension,
+    DeviceHardwareNoticeExtension,
+]
