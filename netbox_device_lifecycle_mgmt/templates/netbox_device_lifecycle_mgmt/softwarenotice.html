@@ -66,6 +66,16 @@
                                 </td>
                             </tr>
                         {% endif %}
+                        <tr>
+                            <td>Expired?</td>
+                            <td>
+                                {% if object.expired %}
+                                    <span class="badge bg-danger">Yes</span>
+                                {% else %}
+                                    <span class="badge bg-success">No</span>
+                                {% endif %}
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </div>

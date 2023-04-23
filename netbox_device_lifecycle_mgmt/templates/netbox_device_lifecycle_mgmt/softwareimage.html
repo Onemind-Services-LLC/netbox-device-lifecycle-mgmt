@@ -33,6 +33,16 @@
                             <td>SHA256 Checksum</td>
                             <td>{{ object.sha256_checksum|placeholder }}</td>
                         </tr>
+                        <tr>
+                            <td>Default Image</td>
+                            <td>
+                                {% if object.default_image %}
+                                    <span class="badge bg-success">Yes</span>
+                                {% else %}
+                                    <span class="badge bg-danger">No</span>
+                                {% endif %}
+                            </td>
+                        </tr>
                     </table>
                 </div>
             </div>

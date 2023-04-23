@@ -16,6 +16,18 @@ class HardwareNoticeForm(NetBoxModelForm):
 
     module_type = DynamicModelChoiceField(queryset=ModuleType.objects.all(), required=False, selector=True)
 
+    release_date = forms.DateField(required=False, widget=DatePicker(), label='Release Date')
+
+    end_of_sale_date = forms.DateField(required=False, widget=DatePicker(), label='End of Sale')
+
+    end_of_support_date = forms.DateField(required=False, widget=DatePicker(), label='End of Support')
+
+    end_of_sw_releases_date = forms.DateField(required=False, widget=DatePicker(), label='End of Software Releases')
+
+    end_of_security_updates_date = forms.DateField(required=False, widget=DatePicker(), label='End of Security Updates')
+
+    documentation_url = forms.URLField(required=False, label='Documentation URL')
+
     comments = CommentField()
 
     fieldsets = (
@@ -49,13 +61,6 @@ class HardwareNoticeForm(NetBoxModelForm):
             'tags',
             'description',
         ]
-        widgets = {
-            'release_date': DatePicker(),
-            'end_of_sale_date': DatePicker(),
-            'end_of_support_date': DatePicker(),
-            'end_of_sw_releases_date': DatePicker(),
-            'end_of_security_updates_date': DatePicker(),
-        }
 
     def __init__(self, *args, **kwargs):
         # Initialize helper selectors
@@ -96,6 +101,12 @@ class SoftwareNoticeForm(NetBoxModelForm):
 
     comments = CommentField()
 
+    release_date = forms.DateField(required=False, widget=DatePicker(), label='Release Date')
+
+    end_of_support_date = forms.DateField(required=False, widget=DatePicker(), label='End of Support')
+
+    documentation_url = forms.URLField(required=False, label='Documentation URL')
+
     fieldsets = (
         (None, ('platform', 'version', 'description', 'tags')),
         ('Lifecycle Management', ('release_date', 'end_of_support_date', 'long_term_support', 'pre_release')),
@@ -116,16 +127,32 @@ class SoftwareNoticeForm(NetBoxModelForm):
             'tags',
             'description',
         ]
-        widgets = {
-            'release_date': DatePicker(),
-            'end_of_support_date': DatePicker(),
-        }
 
 
 class SoftwareImageForm(NetBoxModelForm):
     software = DynamicModelChoiceField(queryset=SoftwareNotice.objects.all(), selector=True)
 
     comments = CommentField()
+
+    file_name = forms.CharField(
+        required=False,
+        label='File Name',
+        help_text='The name of the file to be downloaded. (e.g. "image.bin")',
+    )
+
+    download_url = forms.URLField(required=False, label='Download URL', help_text='The URL to download the image from.')
+
+    sha256_checksum = forms.CharField(
+        required=False,
+        label='SHA256 Checksum',
+        help_text='The SHA256 checksum of the image file.',
+    )
+
+    default_image = forms.BooleanField(
+        required=False,
+        label='Default Image',
+        help_text='The default image to be used for this software version.',
+    )
 
     fieldsets = (
         (None, ('file_name', 'software', 'description', 'tags')),

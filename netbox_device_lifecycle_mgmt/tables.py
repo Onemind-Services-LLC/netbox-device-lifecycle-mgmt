@@ -15,6 +15,30 @@ class HardwareNoticeTable(NetBoxTable):
 
     tags = columns.TagColumn(url_name='plugins:netbox_device_lifecycle_mgmt:hardwarenotice_list')
 
+    release_date = tables.DateColumn(
+        verbose_name='Release Date',
+    )
+
+    end_of_sale_date = tables.DateColumn(
+        verbose_name='End of Sale',
+    )
+
+    end_of_support_date = tables.DateColumn(
+        verbose_name='End of Support',
+    )
+
+    end_of_sw_releases_date = tables.DateColumn(
+        verbose_name='End of Software Releases',
+    )
+
+    end_of_security_updates_date = tables.DateColumn(
+        verbose_name='End of Security Updates',
+    )
+
+    documentation_url = tables.Column(
+        verbose_name='Documentation URL',
+    )
+
     class Meta(NetBoxTable.Meta):
         model = HardwareNotice
         fields = (
@@ -51,6 +75,18 @@ class SoftwareNoticeTable(NetBoxTable):
 
     tags = columns.TagColumn(url_name='plugins:netbox_device_lifecycle_mgmt:softwarenotice_list')
 
+    release_date = tables.DateColumn(
+        verbose_name='Release Date',
+    )
+
+    end_of_support_date = tables.DateColumn(
+        verbose_name='End of Support',
+    )
+
+    documentation_url = tables.Column(
+        verbose_name='Documentation URL',
+    )
+
     class Meta(NetBoxTable.Meta):
         model = SoftwareNotice
         fields = (
@@ -81,7 +117,13 @@ class SoftwareNoticeTable(NetBoxTable):
 class SoftwareImageTable(NetBoxTable):
     software = tables.Column(linkify=True)
 
-    file_name = tables.Column(linkify=True)
+    file_name = tables.Column(linkify=True, verbose_name='File Name')
+
+    download_url = tables.Column(linkify=True, verbose_name='Download URL')
+
+    sha256sum_checksum = tables.Column(verbose_name='SHA256 Checksum')
+
+    default_image = tables.BooleanColumn(verbose_name='Default Image')
 
     class Meta(NetBoxTable.Meta):
         model = SoftwareImage
