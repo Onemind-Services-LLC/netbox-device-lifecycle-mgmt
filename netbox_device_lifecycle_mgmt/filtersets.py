@@ -12,6 +12,7 @@ __all__ = [
     'HardwareNoticeFilterSet',
     'SoftwareNoticeFilterSet',
     'SoftwareImageFilterSet',
+    'SoftwareImageAssociationFilterSet',
 ]
 
 
@@ -237,3 +238,9 @@ class SoftwareImageFilterSet(NetBoxModelFilterSet):
             return queryset
 
         return queryset.filter(Q(software__name__icontains=value) | Q(software__description__icontains=value))
+
+
+class SoftwareImageAssociationFilterSet(NetBoxModelFilterSet):
+    class Meta:
+        model = SoftwareImageAssociation
+        fields = ('id',)

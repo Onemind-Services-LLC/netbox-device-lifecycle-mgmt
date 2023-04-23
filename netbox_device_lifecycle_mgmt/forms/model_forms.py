@@ -1,12 +1,24 @@
-from dcim.models import DeviceType, InventoryItem, ModuleType, Platform
+from dcim.models import (
+    Device,
+    DeviceRole,
+    DeviceType,
+    InventoryItem,
+    ModuleType,
+    Platform,
+)
 from django import forms
 from netbox.forms import NetBoxModelForm
-from utilities.forms.fields import CommentField, DynamicModelChoiceField
+from utilities.forms.fields import (
+    CommentField,
+    DynamicModelChoiceField,
+    DynamicModelMultipleChoiceField,
+)
 from utilities.forms.widgets import DatePicker
+from virtualization.models import VirtualMachine
 
 from ..models import *
 
-__all__ = ['HardwareNoticeForm', 'SoftwareNoticeForm', 'SoftwareImageForm']
+__all__ = ['HardwareNoticeForm', 'SoftwareNoticeForm', 'SoftwareImageForm', 'SoftwareImageAssociationForm']
 
 
 class HardwareNoticeForm(NetBoxModelForm):
@@ -170,4 +182,71 @@ class SoftwareImageForm(NetBoxModelForm):
             'description',
             'comments',
             'tags',
+        ]
+
+
+class SoftwareImageAssociationForm(NetBoxModelForm):
+    image = DynamicModelChoiceField(queryset=SoftwareImage.objects.all(), selector=True)
+
+    comments = CommentField()
+
+    device_types = DynamicModelMultipleChoiceField(
+        queryset=DeviceType.objects.all(),
+        required=False,
+        label='Device Types',
+        help_text='Limit this image assignment to the selected device types.',
+    )
+
+    device_roles = DynamicModelMultipleChoiceField(
+        queryset=DeviceRole.objects.all(),
+        required=False,
+        label='Device Roles',
+        help_text='Limit this image assignment to the selected device roles.',
+    )
+
+    devices = DynamicModelMultipleChoiceField(
+        queryset=Device.objects.all(),
+        required=False,
+        label='Devices',
+        help_text='Limit this image assignment to the selected devices.',
+    )
+
+    inventory_items = DynamicModelMultipleChoiceField(
+        queryset=InventoryItem.objects.all(),
+        required=False,
+        label='Inventory Items',
+        help_text='Limit this image assignment to the selected inventory items.',
+    )
+
+    virtual_machines = DynamicModelMultipleChoiceField(
+        queryset=VirtualMachine.objects.all(),
+        required=False,
+        label='Virtual Machines',
+        help_text='Limit this image assignment to the selected virtual machines.',
+    )
+
+    valid_from = forms.DateField(widget=DatePicker(), label='Valid From')
+
+    valid_until = forms.DateField(required=False, widget=DatePicker(), label='Valid Until')
+
+    fieldsets = (
+        (None, ('image', 'description', 'tags')),
+        ('Associations', ('device_types', 'device_roles', 'devices', 'inventory_items', 'virtual_machines')),
+        ('Validity', ('valid_from', 'valid_until')),
+    )
+
+    class Meta:
+        model = SoftwareImageAssociation
+        fields = [
+            'image',
+            'comments',
+            'device_types',
+            'device_roles',
+            'devices',
+            'inventory_items',
+            'virtual_machines',
+            'description',
+            'tags',
+            'valid_from',
+            'valid_until',
         ]

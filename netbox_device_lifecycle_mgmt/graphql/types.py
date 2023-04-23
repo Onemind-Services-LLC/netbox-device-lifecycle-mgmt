@@ -6,6 +6,7 @@ __all__ = [
     'HardwareNoticeType',
     'SoftwareNoticeType',
     'SoftwareImageType',
+    'SoftwareImageAssociationType',
 ]
 
 
@@ -24,4 +25,10 @@ class SoftwareNoticeType(NetBoxObjectType):
 class SoftwareImageType(NetBoxObjectType):
     class Meta:
         model = models.SoftwareImage
+        fields = '__all__'
+
+
+class SoftwareImageAssociationType(NetBoxObjectType):
+    class Meta:
+        model = models.SoftwareImageAssociation
         fields = '__all__'

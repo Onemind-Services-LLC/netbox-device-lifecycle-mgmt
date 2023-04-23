@@ -27,4 +27,31 @@ urlpatterns = (
     path('software-images/import/', views.SoftwareImageBulkImportView.as_view(), name='softwareimage_import'),
     path('software-images/delete/', views.SoftwareImageBulkDeleteView.as_view(), name='softwareimage_bulk_delete'),
     path('software-images/<int:pk>/', include(get_model_urls(app_name, 'softwareimage'))),
+    # Software Image Associations
+    path(
+        'software-image-associations/',
+        views.SoftwareImageAssociationListView.as_view(),
+        name='softwareimageassociation_list',
+    ),
+    path(
+        'software-image-associations/add/',
+        views.SoftwareImageAssociationEditView.as_view(),
+        name='softwareimageassociation_add',
+    ),
+    path(
+        'software-image-associations/edit/',
+        views.SoftwareImageAssociationBulkEditView.as_view(),
+        name='softwareimageassociation_bulk_edit',
+    ),
+    path(
+        'software-image-associations/import/',
+        views.SoftwareImageAssociationBulkImportView.as_view(),
+        name='softwareimageassociation_import',
+    ),
+    path(
+        'software-image-associations/delete/',
+        views.SoftwareImageAssociationBulkDeleteView.as_view(),
+        name='softwareimageassociation_bulk_delete',
+    ),
+    path('software-image-associations/<int:pk>/', include(get_model_urls(app_name, 'softwareimageassociation'))),
 )

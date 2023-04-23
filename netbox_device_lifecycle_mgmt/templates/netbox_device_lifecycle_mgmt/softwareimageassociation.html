@@ -1,0 +1,50 @@
+{% extends 'generic/object.html' %}
+{% load render_table from django_tables2 %}
+
+{% block content %}
+    <div class="row mb-3">
+        <div class="col col-md-6">
+            <div class="card">
+                <h5 class="card-header">Software Association</h5>
+                <div class="card-body">
+                    <table class="table table-hover attr-table">
+                        <tr>
+                            <td>Software Image</td>
+                            <td>{{ object.image.software|linkify }} / {{ object.image|linkify }}</td>
+                        </tr>
+                        <tr>
+                            <td>Description</td>
+                            <td>{{ object.description|placeholder }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <h5 class="card-header">Associations</h5>
+                <div class="card-body">
+                    <table class="table table-hover attr-table">
+                        {% for title, objects in assigned_objects %}
+                            <tr>
+                                <th scope="row">{{ title }}</th>
+                                <td>
+                                    <ul class="list-unstyled mb-0">
+                                        {% for object in objects %}
+                                            <li>{{ object|linkify }}</li>
+                                            {% empty %}
+                                            <li class="text-muted">None</li>
+                                        {% endfor %}
+                                    </ul>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col col-md-6">
+            {% include 'inc/panels/custom_fields.html' %}
+            {% include 'inc/panels/tags.html' %}
+            {% include 'inc/panels/comments.html' %}
+        </div>
+    </div>
+{% endblock %}

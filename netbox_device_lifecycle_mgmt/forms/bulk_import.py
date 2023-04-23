@@ -6,6 +6,7 @@ __all__ = [
     'HardwareNoticeImportForm',
     'SoftwareNoticeImportForm',
     'SoftwareImageImportForm',
+    'SoftwareImageAssociationImportForm',
 ]
 
 
@@ -56,4 +57,22 @@ class SoftwareImageImportForm(NetBoxModelImportForm):
             'description',
             'tags',
             'comments',
+        )
+
+
+class SoftwareImageAssociationImportForm(NetBoxModelImportForm):
+    class Meta:
+        model = SoftwareImageAssociation
+        fields = (
+            'image',
+            'device_types',
+            'device_roles',
+            'devices',
+            'inventory_items',
+            'virtual_machines',
+            'description',
+            'tags',
+            'comments',
+            'valid_from',
+            'valid_until',
         )

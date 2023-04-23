@@ -1,12 +1,18 @@
-from dcim.models import Platform
+from dcim.models import Device, DeviceRole, DeviceType, InventoryItem, Platform
 from django import forms
 from netbox.forms import NetBoxModelFilterSetForm
 from utilities.forms.fields import DynamicModelMultipleChoiceField, TagFilterField
 from utilities.forms.widgets import DatePicker
+from virtualization.models import VirtualMachine
 
 from ..models import *
 
-__all__ = ['HardwareNoticeFilterForm', 'SoftwareNoticeFilterForm', 'SoftwareImageFilterForm']
+__all__ = [
+    'HardwareNoticeFilterForm',
+    'SoftwareNoticeFilterForm',
+    'SoftwareImageFilterForm',
+    'SoftwareImageAssociationFilterForm',
+]
 
 
 class HardwareNoticeFilterForm(NetBoxModelFilterSetForm):
@@ -128,5 +134,68 @@ class SoftwareImageFilterForm(NetBoxModelFilterSetForm):
     )
 
     default_image = forms.BooleanField(required=False, label='Default Image')
+
+    tag = TagFilterField(model)
+
+
+class SoftwareImageAssociationFilterForm(NetBoxModelFilterSetForm):
+    model = SoftwareImageAssociation
+
+    fieldsets = (
+        (None, ('q', 'filter_id', 'tag')),
+        ('Software', ('image',)),
+        ('Device', ('device_types', 'device_roles', 'devices')),
+        ('Inventory', ('inventory_items',)),
+        ('Virtualization', ('virtual_machines',)),
+        ('Valid From', ('valid_from', 'valid_from__before', 'valid_from__after')),
+        ('Valid Until', ('valid_until', 'valid_until__before', 'valid_until__after')),
+    )
+
+    image = DynamicModelMultipleChoiceField(
+        queryset=SoftwareImage.objects.all(),
+        required=False,
+        label='Image',
+    )
+
+    device_types = DynamicModelMultipleChoiceField(
+        queryset=DeviceType.objects.all(),
+        required=False,
+        label='Device Types',
+    )
+
+    device_roles = DynamicModelMultipleChoiceField(
+        queryset=DeviceRole.objects.all(),
+        required=False,
+        label='Device Roles',
+    )
+
+    devices = DynamicModelMultipleChoiceField(
+        queryset=Device.objects.all(),
+        required=False,
+    )
+
+    inventory_items = DynamicModelMultipleChoiceField(
+        queryset=InventoryItem.objects.all(),
+        required=False,
+        label='Inventory Items',
+    )
+
+    virtual_machines = DynamicModelMultipleChoiceField(
+        queryset=VirtualMachine.objects.all(),
+        required=False,
+        label='Virtual Machines',
+    )
+
+    valid_from = forms.DateField(required=False, label='Valid From', widget=DatePicker())
+
+    valid_from__before = forms.DateField(required=False, label='Valid From (Before)', widget=DatePicker())
+
+    valid_from__after = forms.DateField(required=False, label='Valid From (After)', widget=DatePicker())
+
+    valid_until = forms.DateField(required=False, label='Valid To', widget=DatePicker())
+
+    valid_until__before = forms.DateField(required=False, label='Valid To (Before)', widget=DatePicker())
+
+    valid_until__after = forms.DateField(required=False, label='Valid To (After)', widget=DatePicker())
 
     tag = TagFilterField(model)

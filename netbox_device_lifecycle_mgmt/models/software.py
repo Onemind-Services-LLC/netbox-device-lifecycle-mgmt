@@ -5,7 +5,7 @@ from django.db import models
 from django.urls import reverse
 from netbox.models import PrimaryModel
 
-__all__ = ['SoftwareNotice', 'SoftwareImage']
+__all__ = ['SoftwareNotice', 'SoftwareImage', 'SoftwareImageAssociation']
 
 
 class SoftwareNotice(PrimaryModel):
@@ -150,3 +150,63 @@ class SoftwareImage(PrimaryModel):
         if self.default_image:
             self.software.images.exclude(pk=self.pk).update(default_image=False)
         super().save(*args, **kwargs)
+
+
+class SoftwareImageAssociation(PrimaryModel):
+    image = models.ForeignKey(
+        to='SoftwareImage',
+        on_delete=models.CASCADE,
+        related_name='+',
+    )
+
+    device_types = models.ManyToManyField(
+        to='dcim.DeviceType',
+        related_name='+',
+    )
+
+    device_roles = models.ManyToManyField(
+        to='dcim.DeviceRole',
+        related_name='+',
+    )
+
+    devices = models.ManyToManyField(
+        to='dcim.Device',
+        related_name='+',
+    )
+
+    inventory_items = models.ManyToManyField(
+        to='dcim.InventoryItem',
+        related_name='+',
+    )
+
+    virtual_machines = models.ManyToManyField(
+        to='virtualization.VirtualMachine',
+        related_name='+',
+    )
+
+    valid_from = models.DateField()
+
+    valid_until = models.DateField(
+        blank=True,
+        null=True,
+    )
+
+    class Meta:
+        ordering = [
+            'image',
+            'valid_from',
+        ]
+
+    def __str__(self):
+        return f'{self.image} - Valid From: {self.valid_from}'
+
+    @property
+    def valid(self):
+        """
+        Return True if the assignment is valid.
+        """
+        today = date.today()
+        return self.valid_from <= today and (self.valid_until is None or self.valid_until >= today)
+
+    def get_absolute_url(self):
+        return reverse('plugins:netbox_device_lifecycle_mgmt:softwareimageassociation', args=[self.pk])

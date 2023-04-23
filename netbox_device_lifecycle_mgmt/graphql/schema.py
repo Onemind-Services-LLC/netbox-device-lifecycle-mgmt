@@ -13,3 +13,6 @@ class NetBoxDeviceLifecycleMgmtQuery(graphene.ObjectType):
 
     software_image = ObjectField(SoftwareImageType)
     software_image_list = ObjectListField(SoftwareImageType)
+
+    software_image_association = ObjectField(SoftwareImageAssociationType)
+    software_image_association_list = ObjectListField(SoftwareImageAssociationType)

@@ -216,3 +216,63 @@ class SoftwareImageBulkDeleteView(generic.BulkDeleteView):
     queryset = models.SoftwareImage.objects.all()
     table = tables.SoftwareImageTable
     filterset = filtersets.SoftwareImageFilterSet
+
+
+#
+# Software Image Assignments
+#
+
+
+@register_model_view(models.SoftwareImageAssociation)
+class SoftwareImageAssociationView(generic.ObjectView):
+    queryset = models.SoftwareImageAssociation.objects.all()
+
+    def get_extra_context(self, request, instance):
+        assigned_objects = (
+            ('Device Types', instance.device_types.all()),
+            ('Device Roles', instance.device_roles.all()),
+            ('Devices', instance.devices.all()),
+            ('Inventory Items', instance.inventory_items.all()),
+            ('Virtual Machines', instance.virtual_machines.all()),
+        )
+
+        return {
+            'assigned_objects': assigned_objects,
+        }
+
+
+class SoftwareImageAssociationListView(generic.ObjectListView):
+    queryset = models.SoftwareImageAssociation.objects.all()
+    table = tables.SoftwareImageAssociationTable
+    filterset = filtersets.SoftwareImageAssociationFilterSet
+    filterset_form = forms.SoftwareImageAssociationFilterForm
+
+
+@register_model_view(models.SoftwareImageAssociation, 'edit')
+class SoftwareImageAssociationEditView(generic.ObjectEditView):
+    queryset = models.SoftwareImageAssociation.objects.all()
+    form = forms.SoftwareImageAssociationForm
+
+
+@register_model_view(models.SoftwareImageAssociation, 'delete')
+class SoftwareImageAssociationDeleteView(generic.ObjectDeleteView):
+    queryset = models.SoftwareImageAssociation.objects.all()
+
+
+class SoftwareImageAssociationBulkEditView(generic.BulkEditView):
+    queryset = models.SoftwareImageAssociation.objects.all()
+    table = tables.SoftwareImageAssociationTable
+    filterset = filtersets.SoftwareImageAssociationFilterSet
+    form = forms.SoftwareImageAssociationBulkEditForm
+
+
+class SoftwareImageAssociationBulkImportView(generic.BulkImportView):
+    queryset = models.SoftwareImageAssociation.objects.all()
+    table = tables.SoftwareImageAssociationTable
+    model_form = forms.SoftwareImageAssociationImportForm
+
+
+class SoftwareImageAssociationBulkDeleteView(generic.BulkDeleteView):
+    queryset = models.SoftwareImageAssociation.objects.all()
+    table = tables.SoftwareImageAssociationTable
+    filterset = filtersets.SoftwareImageAssociationFilterSet

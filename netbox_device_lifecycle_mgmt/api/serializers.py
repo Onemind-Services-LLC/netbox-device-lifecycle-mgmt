@@ -1,16 +1,30 @@
-from dcim.api.nested_serializers import NestedPlatformSerializer
+from dcim.api.nested_serializers import (
+    NestedDeviceRoleSerializer,
+    NestedDeviceSerializer,
+    NestedDeviceTypeSerializer,
+    NestedInventoryItemSerializer,
+    NestedPlatformSerializer,
+)
+from dcim.models import Device, DeviceRole, DeviceType, InventoryItem
 from django.contrib.contenttypes.models import ContentType
-from netbox.api.fields import ContentTypeField
+from netbox.api.fields import ContentTypeField, SerializedPKRelatedField
 from netbox.api.serializers import NetBoxModelSerializer
 from netbox.constants import NESTED_SERIALIZER_PREFIX
 from rest_framework import serializers
 from utilities.api import get_serializer_for_model
+from virtualization.api.nested_serializers import NestedVirtualMachineSerializer
+from virtualization.models import VirtualMachine
 
 from ..constants import HARDWARE_NOTICE_ASSIGNMENT_MODELS
 from ..models import *
 from .nested_serializers import *
 
-__all__ = ['HardwareNoticeSerializer', 'SoftwareNoticeSerializer', 'SoftwareImageSerializer']
+__all__ = [
+    'HardwareNoticeSerializer',
+    'SoftwareNoticeSerializer',
+    'SoftwareImageSerializer',
+    'SoftwareImageAssociationSerializer',
+]
 
 
 class HardwareNoticeSerializer(NetBoxModelSerializer):
@@ -99,6 +113,68 @@ class SoftwareImageSerializer(NetBoxModelSerializer):
             'download_url',
             'sha256_checksum',
             'default_image',
+            'comments',
+            'description',
+            'created',
+            'last_updated',
+            'tags',
+        )
+
+
+class SoftwareImageAssociationSerializer(NetBoxModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='plugins-api:netbox_device_lifecycle_mgmt-api:softwareimageassociation-detail',
+    )
+
+    image = NestedSoftwareImageSerializer()
+
+    device_types = SerializedPKRelatedField(
+        queryset=DeviceType.objects.all(),
+        serializer=NestedDeviceTypeSerializer,
+        required=False,
+        many=True,
+    )
+
+    device_roles = SerializedPKRelatedField(
+        queryset=DeviceRole.objects.all(),
+        serializer=NestedDeviceRoleSerializer,
+        required=False,
+        many=True,
+    )
+
+    devices = SerializedPKRelatedField(
+        queryset=Device.objects.all(),
+        serializer=NestedDeviceSerializer,
+        required=False,
+        many=True,
+    )
+
+    inventory_items = SerializedPKRelatedField(
+        queryset=InventoryItem.objects.all(),
+        serializer=NestedInventoryItemSerializer,
+        required=False,
+        many=True,
+    )
+
+    virtual_machines = SerializedPKRelatedField(
+        queryset=VirtualMachine.objects.all(),
+        serializer=NestedVirtualMachineSerializer,
+        required=False,
+        many=True,
+    )
+
+    class Meta:
+        model = SoftwareImageAssociation
+        fields = (
+            'id',
+            'url',
+            'display',
+            'image',
+            'device_types',
+            'device_roles',
+            'devices',
+            'inventory_items',
+            'virtual_machines',
             'comments',
             'description',
             'created',

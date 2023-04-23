@@ -6,6 +6,7 @@ __all__ = [
     'HardwareNoticeBulkEditForm',
     'SoftwareNoticeBulkEditForm',
     'SoftwareImageBulkEditForm',
+    'SoftwareImageAssociationBulkEditForm',
 ]
 
 
@@ -19,3 +20,7 @@ class SoftwareNoticeBulkEditForm(NetBoxModelBulkEditForm):
 
 class SoftwareImageBulkEditForm(NetBoxModelBulkEditForm):
     model = SoftwareImage
+
+
+class SoftwareImageAssociationBulkEditForm(NetBoxModelBulkEditForm):
+    model = SoftwareImageAssociation
