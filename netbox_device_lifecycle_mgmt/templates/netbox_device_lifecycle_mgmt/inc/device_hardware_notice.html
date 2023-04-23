@@ -1,8 +1,8 @@
 {% if perms.netbox_device_lifecycle_mgmt.view_hardwarenotice %}
     {% if objects %}
-        <div class="row">
-            <div class="col col-md-12">
-                <div class="card">
+        <div class="card">
+            <div class="row">
+                <div class="col col-md-12">
                     <h5 class="card-header">Hardware Notices</h5>
                     <div class="card-body">
                         <div class="accordion" id="hardware_notice">
@@ -13,7 +13,7 @@
                                                 type="button" data-bs-toggle="collapse"
                                                 data-bs-target="#hw_collapse{{ object.pk }}" aria-expanded="true"
                                                 aria-controls="hw_collapse{{ object.pk }}">
-                                            {{ object.object|meta:'verbose_name'|bettertitle }} - {{ object }}
+                                            {{ object.object|meta:'verbose_name'|bettertitle }}: {{ object }}
                                         </button>
                                     </h2>
                                     <div id="hw_collapse{{ object.pk }}" class="accordion-collapse collapse"
@@ -26,10 +26,6 @@
                                                     <td>
                                                         <a href="{{ object.get_absolute_url }}">{{ object.id }}</a>
                                                     </td>
-                                                </tr>
-                                                <tr>
-                                                    <td>{{ object.object|meta:'verbose_name'|bettertitle }}</td>
-                                                    <td>{{ object.object|linkify }}</td>
                                                 </tr>
                                                 {% if object.end_of_sale_date %}
                                                     <tr>
