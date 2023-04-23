@@ -28,16 +28,27 @@ class InventoryItemHardwareNoticeExtension(GeneralNoticeExtension):
     model = 'dcim.inventoryitem'
 
 
+class ModuleTypeHardwareNoticeExtension(GeneralNoticeExtension):
+    model = 'dcim.moduletype'
+
+
 class DeviceHardwareNoticeExtension(PluginTemplateExtension):
     model = 'dcim.device'
 
     def left_page(self):
-        qs_filters = Q(
-            object_type=ContentType.objects.get(app_label='dcim', model='devicetype'),
-            object_id=self.context['object'].device_type.id,
-        ) | Q(
-            object_type=ContentType.objects.get(app_label='dcim', model='inventoryitem'),
-            object_id__in=self.context['object'].inventoryitems.values_list('id', flat=True),
+        qs_filters = (
+            Q(
+                object_type=ContentType.objects.get(app_label='dcim', model='devicetype'),
+                object_id=self.context['object'].device_type.id,
+            )
+            | Q(
+                object_type=ContentType.objects.get(app_label='dcim', model='inventoryitem'),
+                object_id__in=self.context['object'].inventoryitems.values_list('id', flat=True),
+            )
+            | Q(
+                object_type=ContentType.objects.get(app_label='dcim', model='moduletype'),
+                object_id__in=self.context['object'].modules.values_list('module_type_id', flat=True),
+            )
         )
 
         return self.render(
@@ -52,4 +63,5 @@ template_extensions = [
     DeviceTypeHardwareNoticeExtension,
     InventoryItemHardwareNoticeExtension,
     DeviceHardwareNoticeExtension,
+    ModuleTypeHardwareNoticeExtension,
 ]

@@ -59,14 +59,18 @@ class HardwareNoticeDevicesView(generic.ObjectChildrenView):
     tab = ViewTab(label='Devices', badge=lambda obj: obj.device_count, hide_if_empty=True)
 
     def get_children(self, request, parent):
-        filter = {}
+        qs_filter = {}
 
-        if hasattr(parent.object, 'instances'):
-            filter['pk__in'] = [i.pk for i in parent.object.instances.all()]
-        elif hasattr(parent.object, 'device'):
-            filter['pk'] = parent.object.device.pk
+        if parent.object._meta.model_name == 'devicetype':
+            qs_filter['device_type'] = parent.object
+        elif parent.object._meta.model_name == 'inventoryitem':
+            qs_filter['inventoryitems'] = parent.object
+        elif parent.object._meta.model_name == 'moduletype':
+            qs_filter['modules__module_type'] = parent.object
+        else:
+            return self.child_model.objects.none()
 
-        return self.child_model.objects.restrict(request.user, 'view').filter(**filter)
+        return self.child_model.objects.restrict(request.user, 'view').filter(**qs_filter)
 
     def get_extra_context(self, request, instance):
         return {'table_config': f'{self.table.__name__}_config'}

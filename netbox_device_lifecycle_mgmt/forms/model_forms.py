@@ -1,4 +1,4 @@
-from dcim.models import DeviceType, InventoryItem
+from dcim.models import DeviceType, InventoryItem, ModuleType
 from django import forms
 from netbox.forms import NetBoxModelForm
 from utilities.forms.fields import CommentField, DynamicModelChoiceField
@@ -12,10 +12,12 @@ class HardwareNoticeForm(NetBoxModelForm):
 
     inventory_item = DynamicModelChoiceField(queryset=InventoryItem.objects.all(), required=False, selector=True)
 
+    module_type = DynamicModelChoiceField(queryset=ModuleType.objects.all(), required=False, selector=True)
+
     comments = CommentField()
 
     fieldsets = (
-        (None, ('device_type', 'inventory_item', 'description', 'tags')),
+        (None, ('device_type', 'inventory_item', 'module_type', 'description', 'tags')),
         (
             'Lifecycle Management',
             (
@@ -34,6 +36,7 @@ class HardwareNoticeForm(NetBoxModelForm):
         fields = [
             'device_type',
             'inventory_item',
+            'module_type',
             'release_date',
             'end_of_sale_date',
             'end_of_support_date',
@@ -61,6 +64,8 @@ class HardwareNoticeForm(NetBoxModelForm):
                 initial['device_type'] = instance.object
             elif isinstance(instance.object, InventoryItem):
                 initial['inventory_item'] = instance.object
+            elif isinstance(instance.object, ModuleType):
+                initial['module_type'] = instance.object
 
         kwargs['initial'] = initial
 
@@ -70,7 +75,9 @@ class HardwareNoticeForm(NetBoxModelForm):
         super().clean()
 
         # Handle object assignment
-        selected_objects = [field for field in ('device_type', 'inventory_item') if self.cleaned_data[field]]
+        selected_objects = [
+            field for field in ('device_type', 'inventory_item', 'module_type') if self.cleaned_data[field]
+        ]
 
         if len(selected_objects) > 1:
             raise forms.ValidationError(
