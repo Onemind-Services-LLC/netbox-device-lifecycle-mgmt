@@ -7,6 +7,7 @@ __all__ = [
     'SoftwareNoticeImportForm',
     'SoftwareImageImportForm',
     'SoftwareImageAssociationImportForm',
+    'ServiceProviderImportForm',
 ]
 
 
@@ -75,4 +76,15 @@ class SoftwareImageAssociationImportForm(NetBoxModelImportForm):
             'comments',
             'valid_from',
             'valid_until',
+        )
+
+
+class ServiceProviderImportForm(NetBoxModelImportForm):
+    class Meta:
+        model = ServiceProvider
+        fields = (
+            'name',
+            'description',
+            'tags',
+            'comments',
         )

@@ -86,4 +86,25 @@ menu_items = (
             ),
         ),
     ),
+    PluginMenuItem(
+        link='plugins:netbox_device_lifecycle_mgmt:serviceprovider_list',
+        link_text='Service Providers',
+        permissions=['netbox_device_lifecycle_mgmt.view_serviceprovider'],
+        buttons=(
+            PluginMenuButton(
+                link='plugins:netbox_device_lifecycle_mgmt:serviceprovider_add',
+                title='Add',
+                icon_class='mdi mdi-plus-thick',
+                color=ButtonColorChoices.GREEN,
+                permissions=['netbox_device_lifecycle_mgmt.add_serviceprovider'],
+            ),
+            PluginMenuButton(
+                link='plugins:netbox_device_lifecycle_mgmt:serviceprovider_import',
+                title='Import',
+                icon_class='mdi mdi-upload',
+                color=ButtonColorChoices.CYAN,
+                permissions=['netbox_device_lifecycle_mgmt.add_serviceprovider'],
+            ),
+        ),
+    ),
 )

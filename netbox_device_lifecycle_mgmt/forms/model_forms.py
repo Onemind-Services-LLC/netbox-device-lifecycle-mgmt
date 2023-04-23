@@ -18,7 +18,13 @@ from virtualization.models import VirtualMachine
 
 from ..models import *
 
-__all__ = ['HardwareNoticeForm', 'SoftwareNoticeForm', 'SoftwareImageForm', 'SoftwareImageAssociationForm']
+__all__ = [
+    'HardwareNoticeForm',
+    'SoftwareNoticeForm',
+    'SoftwareImageForm',
+    'SoftwareImageAssociationForm',
+    'ServiceProviderForm',
+]
 
 
 class HardwareNoticeForm(NetBoxModelForm):
@@ -249,4 +255,17 @@ class SoftwareImageAssociationForm(NetBoxModelForm):
             'tags',
             'valid_from',
             'valid_until',
+        ]
+
+
+class ServiceProviderForm(NetBoxModelForm):
+    fieldsets = ((None, ('name', 'description', 'tags')),)
+
+    class Meta:
+        model = ServiceProvider
+        fields = [
+            'name',
+            'description',
+            'comments',
+            'tags',
         ]

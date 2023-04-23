@@ -24,6 +24,7 @@ __all__ = [
     'SoftwareNoticeSerializer',
     'SoftwareImageSerializer',
     'SoftwareImageAssociationSerializer',
+    'ServiceProviderSerializer',
 ]
 
 
@@ -175,6 +176,26 @@ class SoftwareImageAssociationSerializer(NetBoxModelSerializer):
             'devices',
             'inventory_items',
             'virtual_machines',
+            'comments',
+            'description',
+            'created',
+            'last_updated',
+            'tags',
+        )
+
+
+class ServiceProviderSerializer(NetBoxModelSerializer):
+    url = serializers.HyperlinkedIdentityField(
+        view_name='plugins-api:netbox_device_lifecycle_mgmt-api:serviceprovider-detail',
+    )
+
+    class Meta:
+        model = ServiceProvider
+        fields = (
+            'id',
+            'url',
+            'display',
+            'name',
             'comments',
             'description',
             'created',

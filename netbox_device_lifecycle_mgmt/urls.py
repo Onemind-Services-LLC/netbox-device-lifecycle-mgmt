@@ -54,4 +54,15 @@ urlpatterns = (
         name='softwareimageassociation_bulk_delete',
     ),
     path('software-image-associations/<int:pk>/', include(get_model_urls(app_name, 'softwareimageassociation'))),
+    # Service Providers
+    path('service-providers/', views.ServiceProviderListView.as_view(), name='serviceprovider_list'),
+    path('service-providers/add/', views.ServiceProviderEditView.as_view(), name='serviceprovider_add'),
+    path('service-providers/edit/', views.ServiceProviderBulkEditView.as_view(), name='serviceprovider_bulk_edit'),
+    path('service-providers/import/', views.ServiceProviderBulkImportView.as_view(), name='serviceprovider_import'),
+    path(
+        'service-providers/delete/',
+        views.ServiceProviderBulkDeleteView.as_view(),
+        name='serviceprovider_bulk_delete',
+    ),
+    path('service-providers/<int:pk>/', include(get_model_urls(app_name, 'serviceprovider'))),
 )

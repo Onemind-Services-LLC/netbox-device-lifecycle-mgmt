@@ -291,3 +291,50 @@ class SoftwareImageAssociationBulkDeleteView(generic.BulkDeleteView):
     queryset = models.SoftwareImageAssociation.objects.all()
     table = tables.SoftwareImageAssociationTable
     filterset = filtersets.SoftwareImageAssociationFilterSet
+
+
+#
+# Service Providers
+#
+
+
+@register_model_view(models.ServiceProvider)
+class ServiceProviderView(generic.ObjectView):
+    queryset = models.ServiceProvider.objects.all()
+
+
+class ServiceProviderListView(generic.ObjectListView):
+    queryset = models.ServiceProvider.objects.all()
+    table = tables.ServiceProviderTable
+    filterset = filtersets.ServiceProviderFilterSet
+    filterset_form = forms.ServiceProviderFilterForm
+
+
+@register_model_view(models.ServiceProvider, 'edit')
+class ServiceProviderEditView(generic.ObjectEditView):
+    queryset = models.ServiceProvider.objects.all()
+    form = forms.ServiceProviderForm
+
+
+@register_model_view(models.ServiceProvider, 'delete')
+class ServiceProviderDeleteView(generic.ObjectDeleteView):
+    queryset = models.ServiceProvider.objects.all()
+
+
+class ServiceProviderBulkEditView(generic.BulkEditView):
+    queryset = models.ServiceProvider.objects.all()
+    table = tables.ServiceProviderTable
+    filterset = filtersets.ServiceProviderFilterSet
+    form = forms.ServiceProviderBulkEditForm
+
+
+class ServiceProviderBulkImportView(generic.BulkImportView):
+    queryset = models.ServiceProvider.objects.all()
+    table = tables.ServiceProviderTable
+    model_form = forms.ServiceProviderImportForm
+
+
+class ServiceProviderBulkDeleteView(generic.BulkDeleteView):
+    queryset = models.ServiceProvider.objects.all()
+    table = tables.ServiceProviderTable
+    filterset = filtersets.ServiceProviderFilterSet

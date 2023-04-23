@@ -3,7 +3,13 @@ from netbox.tables import NetBoxTable, columns
 
 from .models import *
 
-__all__ = ['HardwareNoticeTable', 'SoftwareNoticeTable', 'SoftwareImageTable', 'SoftwareImageAssociationTable']
+__all__ = [
+    'HardwareNoticeTable',
+    'SoftwareNoticeTable',
+    'SoftwareImageTable',
+    'SoftwareImageAssociationTable',
+    'ServiceProviderTable',
+]
 
 
 class HardwareNoticeTable(NetBoxTable):
@@ -181,4 +187,27 @@ class SoftwareImageAssociationTable(NetBoxTable):
             'devices',
             'inventory_items',
             'virtual_machines',
+        )
+
+
+class ServiceProviderTable(NetBoxTable):
+    name = tables.Column(linkify=True)
+
+    class Meta(NetBoxTable.Meta):
+        model = ServiceProvider
+        fields = (
+            'pk',
+            'id',
+            'name',
+            'description',
+            'comments',
+            'tags',
+            'created',
+            'last_updated',
+        )
+
+        default_columns = (
+            'id',
+            'name',
+            'description',
         )

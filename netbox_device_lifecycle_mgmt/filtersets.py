@@ -13,6 +13,7 @@ __all__ = [
     'SoftwareNoticeFilterSet',
     'SoftwareImageFilterSet',
     'SoftwareImageAssociationFilterSet',
+    'ServiceProviderFilterSet',
 ]
 
 
@@ -244,3 +245,15 @@ class SoftwareImageAssociationFilterSet(NetBoxModelFilterSet):
     class Meta:
         model = SoftwareImageAssociation
         fields = ('id',)
+
+
+class ServiceProviderFilterSet(NetBoxModelFilterSet):
+    class Meta:
+        model = ServiceProvider
+        fields = ('id', 'name')
+
+    def search(self, queryset, name, value):
+        if not value.strip():
+            return queryset
+
+        return queryset.filter(name__icontains=value)

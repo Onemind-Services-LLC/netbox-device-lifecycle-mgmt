@@ -12,6 +12,7 @@ __all__ = [
     'SoftwareNoticeFilterForm',
     'SoftwareImageFilterForm',
     'SoftwareImageAssociationFilterForm',
+    'ServiceProviderFilterForm',
 ]
 
 
@@ -197,5 +198,13 @@ class SoftwareImageAssociationFilterForm(NetBoxModelFilterSetForm):
     valid_until__before = forms.DateField(required=False, label='Valid To (Before)', widget=DatePicker())
 
     valid_until__after = forms.DateField(required=False, label='Valid To (After)', widget=DatePicker())
+
+    tag = TagFilterField(model)
+
+
+class ServiceProviderFilterForm(NetBoxModelFilterSetForm):
+    model = ServiceProvider
+
+    fieldsets = ((None, ('q', 'filter_id', 'tag')),)
 
     tag = TagFilterField(model)

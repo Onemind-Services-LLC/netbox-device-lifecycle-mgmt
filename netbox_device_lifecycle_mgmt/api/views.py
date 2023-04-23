@@ -27,3 +27,9 @@ class SoftwareImageAssociationViewSet(NetBoxModelViewSet):
     queryset = SoftwareImageAssociation.objects.all()
     serializer_class = SoftwareImageAssociationSerializer
     filterset_class = SoftwareImageAssociationFilterSet
+
+
+class ServiceProviderViewSet(NetBoxModelViewSet):
+    queryset = ServiceProvider.objects.all()
+    serializer_class = ServiceProviderSerializer
+    filterset_class = ServiceProviderFilterSet
