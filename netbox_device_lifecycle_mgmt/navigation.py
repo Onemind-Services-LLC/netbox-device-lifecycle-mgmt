@@ -1,7 +1,11 @@
-from extras.plugins import PluginMenuButton, PluginMenuItem
+from django.conf import settings
+
+from extras.plugins import PluginMenu, PluginMenuButton, PluginMenuItem
 from utilities.choices import ButtonColorChoices
 
-menu_items = (
+plugin_settings = settings.PLUGINS_CONFIG.get('netbox_device_lifecycle_mgmt')
+
+hardware_buttons = (
     PluginMenuItem(
         link='plugins:netbox_device_lifecycle_mgmt:hardwarenotice_list',
         link_text='Hardware Notices',
@@ -23,6 +27,9 @@ menu_items = (
             ),
         ),
     ),
+)
+
+software_buttons = (
     PluginMenuItem(
         link='plugins:netbox_device_lifecycle_mgmt:softwarenotice_list',
         link_text='Software Notices',
@@ -86,6 +93,9 @@ menu_items = (
             ),
         ),
     ),
+)
+
+contract_buttons = (
     PluginMenuItem(
         link='plugins:netbox_device_lifecycle_mgmt:serviceprovider_list',
         link_text='Service Providers',
@@ -129,3 +139,16 @@ menu_items = (
         ),
     ),
 )
+
+if plugin_settings.get('top_level_menu', False):
+    menu = PluginMenu(
+        label='Device Lifecycle',
+        icon_class='mdi mdi-devices',
+        groups=(
+            ('Hardware', hardware_buttons),
+            ('Software', software_buttons),
+            ('Contracts', contract_buttons),
+        ),
+    )
+else:
+    menu_items = hardware_buttons + software_buttons + contract_buttons
