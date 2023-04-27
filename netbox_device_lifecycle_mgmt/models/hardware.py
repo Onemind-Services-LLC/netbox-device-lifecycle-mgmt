@@ -10,7 +10,7 @@ __all__ = ['HardwareNotice']
 
 
 class HardwareNotice(PrimaryModel):
-    object_type = models.ForeignKey(to=ContentType, on_delete=models.CASCADE, related_name='+')
+    object_type = models.ForeignKey(to='contenttypes.ContentType', on_delete=models.CASCADE, related_name='+')
     object_id = models.PositiveBigIntegerField()
     object = GenericForeignKey(ct_field='object_type', fk_field='object_id')
 
@@ -71,6 +71,7 @@ class HardwareNotice(PrimaryModel):
         else:
             name += f' (End of sale: {self.end_of_sale_date})'
 
+        name = f'{self.object_type.model_class()._meta.verbose_name.title()}: {name}'
         return name
 
     def get_absolute_url(self):

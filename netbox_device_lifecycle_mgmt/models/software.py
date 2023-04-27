@@ -67,7 +67,7 @@ class SoftwareNotice(PrimaryModel):
         ]
 
     def __str__(self):
-        return f'{self.platform} {self.version}'
+        return f'{self.platform}: {self.version}'
 
     def get_absolute_url(self):
         return reverse('plugins:netbox_device_lifecycle_mgmt:softwarenotice', args=[self.pk])
